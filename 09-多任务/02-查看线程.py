@@ -18,12 +18,15 @@ def test2(num):
     print("-----test222222 end-----")
 
 
+'''
+threading.enumerate()  返回一个包含正在运行的线程的list
+python中主线程等待所有子线程执行完毕，主线程才能结束
+type()函数能够查看一个对象的类型
+'''
+
+
 def main():
-    '''
-    threading.enumerate()  返回一个包含正在运行的线程的list
-    python中主线程等待所有子线程执行完毕，主线程才能结束
-    type()函数能够查看一个对象的类型
-    '''
+
     thread1 = threading.Thread(target=test1, args=(5,))
     thread2 = threading.Thread(target=test2, args=(5,))
 

@@ -14,11 +14,12 @@ def dance(num):
         time.sleep(1)
 
 
-def main():
+'''
+python中threading.Thread方法可以创建一个线程
+'''
 
-    '''
-    python中threading.Thread方法可以创建一个线程
-    '''
+
+def main():
     thread1 = threading.Thread(target=sing, args=(5,))
     thread2 = threading.Thread(target=dance, args=(5,))
 
