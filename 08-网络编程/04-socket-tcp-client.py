@@ -11,10 +11,13 @@ def main():
     print(dest_addr)
     tcp_client_socket.connect(dest_addr)
 
-    # 3.发送数据
+    # 3.发送/接收数据
     send_data=input("请输入要发送的内容:\n")
-
     tcp_client_socket.send(send_data.encode("GBK"))
+
+    receive_data = tcp_client_socket.recv(1024)
+
+    print("收到服务器的消息：\n" + receive_data.decode("GBK"))
     # 4.关闭套接字
     tcp_client_socket.close()
 
