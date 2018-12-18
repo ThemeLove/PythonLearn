@@ -2,71 +2,92 @@ import multiprocessing
 import os
 import logging
 
+# 定义全局变量进程池
+pool = multiprocessing.Pool(3)
+# 定义全局变量进程间队列
+queue = multiprocessing.Manager().Queue()
 
-def copy_file(queue, source_dir, target_folder, file_name):
 
-    source_file_name = source_dir + "/" + file_name
-    target_file_name = target_folder + "/" + file_name
-    print("拷贝"+source_file_name+"----->"+target_file_name+"开始")
+def copy_file(source_file, target_file):
+    """
+    copy文件
+    :param source_file:源文件
+    :param target_file:目标文件
+    :return:
+    """
+    # global queue
+    rf = open(source_file, "rb")
+    read_data = rf.read()
+    rf.close()
 
-    f_old = open(source_file_name, "rb")
-    file_content = f_old.read()
-    f_old.close()
+    wf = open(target_file, "wb")
+    wf.write(read_data)
+    wf.close()
 
-    print("file_content="+ file_content)
-    f_new = open(target_file_name, "wb")
-    f_new.write(file_content)
-    f_new.close()
+    print(source_file+"拷贝完成!")
+    queue.put(source_file)
 
-    print(str(source_file_name)+" 拷贝完成！")
-#   读写完一个文件，要将该文件名放到queue中
-    queue.put(source_file_name)
+
+def copy_dir(source_path, target_path):
+    """
+    copy文件或文件夹
+    :param source_path:源目录
+    :param target_path:目标目录
+    :return:
+    """
+    # global pool
+    if os.path.isdir(source_path):
+        files = os.listdir(source_path)
+        for file in files:
+            if os.path.isdir(file):
+                copy_dir(source_path+"/"+file, target_path + "/" + file)
+            else:
+                # print("source_file= "+source_path+"/"+file)
+                # print("target_file= "+target_path+"/"+file)
+                # print("开始拷贝"+file+"----->"+target_path+"/"+file)
+                pool.apply_async(copy_file, args=(source_path+"/"+file, target_path + "/" + file))
+    else:
+        pool.apply_async(copy_file, args=(source_path, target_path))
 
 
 def main():
-
-    # 1.创建进程池
-    cpu_count = multiprocessing.cpu_count()
-    print("cpu_count= "+str(cpu_count))
-    pool = multiprocessing.Pool(3)
-    # 2.创建进程间队列
-    queue = multiprocessing.Manager().Queue()
-    # 3.输入要拷贝的目录
-    source_dir = input("请输入要拷贝的文件目录：\n")
-    print("source_dir= "+source_dir)
-
-    # 创建一个新的文件夹
-    target_folder = ""
+    # 1.输入要拷贝的目录
+    source_path = input("请输入要拷贝的文件目录：\n")
+    # 2.生成目标文件夹目录
+    target_path = ""
     try:
-        target_folder = source_dir + "_temp"
-        os.mkdir(target_folder)
-        print("target_folder "+target_folder+"创建成功")
+        target_path = source_path + "_temp"
+        os.mkdir(target_path)
     except IOError as e:
         logging.exception(e)
 
-    file_names = os.listdir(source_dir)
+    print(pool)
+    print(queue)
+
+    file_names = os.listdir(source_path)
     print("file_name= " + str(file_names))
 
-    for file_name in file_names:
-        # 4.开启任务
-        pool.apply_async(copy_file, args=(queue, source_dir, target_folder, file_name))
+    # 5.开始拷贝
+    copy_dir(source_path, target_path)
 
-    # 5.关闭进程池
+    # 6.关闭进程池
     pool.close()
 
     # pool.join()
 
 #     计算要拷贝的总个数
     total_num = len(file_names)
-    print("total_count= "+ str(total_num))
+    print("total_count= " + str(total_num))
     has_copy_count = 0
     while True:
         file_name = queue.get()
         has_copy_count += 1
+        print("has_copy_count="+ str(has_copy_count))
 #       打印拷贝的进度
-        print("\r拷贝的进度%.2f %%" % (has_copy_count*100/total_num))
+        print("\r拷贝的进度%.2f %%" % (has_copy_count*100/total_num), end="")
 #       退出循环的条件
         if has_copy_count >= total_num:
+            print("break")
             break
     print()
 
