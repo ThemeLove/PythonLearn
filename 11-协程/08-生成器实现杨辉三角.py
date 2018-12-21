@@ -13,15 +13,11 @@ def yanghui_triangle(num):
             # 给temp_ret_list的首尾添加两个0元素
             temp_ret_list.insert(0, 0)
             temp_ret_list.append(0)
-            print("aaaaaaaaaa")
-            print(temp_ret_list)
             temp_list = list()
-            for temp in temp_ret_list:
-                # 获取temp的索引
-                index = temp_ret_list.index(temp)
+            for (index, temp) in enumerate(temp_ret_list):
                 # 判断边界
-                if index < len(temp_ret_list):
-                   temp_list.append(temp + temp_ret_list[index+1])
+                if index < len(temp_ret_list)-1:
+                    temp_list.append(temp + temp_ret_list[index+1])
             ret_list = temp_list
 
         yield ret_list
@@ -42,6 +38,9 @@ def main():
     print(yang2)
     print(yang3)
     print(yang10)
+
+    for temp in yang0:
+        print(temp)
     #
     # for temp in yang0:
     #     print(temp)
@@ -55,7 +54,7 @@ def main():
     #     print(temp)
     # print("---------------\n\n\n")
 
-    for temp in yang3:
+    for temp in yang10:
         print(temp)
     print("---------------\n\n\n")
 
