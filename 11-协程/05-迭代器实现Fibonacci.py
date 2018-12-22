@@ -1,5 +1,6 @@
 from collections import Iterator
 
+
 class Fibonacci:
     def __init__(self, num):
         self.count = 0

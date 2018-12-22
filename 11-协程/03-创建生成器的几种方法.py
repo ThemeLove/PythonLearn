@@ -4,15 +4,13 @@ def fibonacci(num):
     :param num:表示生成的fibonacci的元素个数
     :return:
     """
-    try:
-        count = 0
-        a, b = 0, 1
-        while count < num:
-            yield a
-            a, b = b, a + b
-            count += 1
-    except Exception as e:
-        raise StopIteration()
+    count = 0
+    a, b = 0, 1
+    while count < num:
+        yield a
+        a, b = b, a + b
+        count += 1
+
 
 
 def main():
