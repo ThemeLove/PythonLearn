@@ -13,16 +13,16 @@ def task_one():
         time.sleep(0.5)
 
 
-def task_two():
+def task_two( ):
     while True:
         print("-------task two--------")
         green_one.switch()  # 切换到green_two执行
         time.sleep(0.5)
 
 
-green_one = greenlet(task_one) # 创建green_onw
-green_two = greenlet(task_two) # 创建green_two
-green_one.switch() # 切换到green_one中执行
+green_one = greenlet(task_one)  # 创建green_one
+green_two = greenlet(task_two)  # 创建green_two
+green_one.switch()  # 切换到green_one中执行
 
 #
 # def main():
