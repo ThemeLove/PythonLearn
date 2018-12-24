@@ -4,10 +4,10 @@ from collections import Iterator
 
 class School:
     def __init__(self):
-        self.teachers = list() # 创建一个空列表
+        self.teachers = list()  # 创建一个空列表
         self.index = 0
 
-    def append(self,teacher):
+    def append(self, teacher):
         self.teachers.append(teacher)
 
     """
@@ -36,8 +36,8 @@ class School:
 
 
 def main():
-    lista = range(10)
-    for i in lista:
+    list1 = range(10)
+    for i in list1:
         print(i)
 
     school = School()
@@ -46,14 +46,14 @@ def main():
     school.append("廖老师")
 
 #     判断一个对象是否时可迭代的，isinstance可一判断一个对象是否时某种数据类型，Iterable 表示可迭代的
-    str = "abc"
-    tuplea = ("a","b","c","d")
-    dict = {"name": "张三", "age": 18, "gender": "male"}
-    print(isinstance(str, Iterable)) # True
-    print(isinstance(lista, Iterable)) #T rue
-    print(isinstance(tuplea, Iterable)) # True
-    print(isinstance(dict,Iterable))
-    print(isinstance(1,Iterable))  # False
+    str1 = "abc"
+    tuple1 = ("a", "b", "c", "d")
+    dict1 = {"name": "张三", "age": 18, "gender": "male"}
+    print(isinstance(str1, Iterable))  # True
+    print(isinstance(list1, Iterable))  # True
+    print(isinstance(tuple1, Iterable))  # True
+    print(isinstance(dict1, Iterable))  # True
+    print(isinstance(1, Iterable))  # False
 
     print(isinstance(school, Iterable))
 
@@ -61,9 +61,12 @@ def main():
 
     print(isinstance(school, Iterator))
     # 调用iter(obj) 就相当于调用可迭代对象（obj）的__iter__方法
-    print(iter(school))
+    print("school= ", school)
+    print("iter(school)= ", iter(school))
+    print("iter(1)= ", iter(1))  # 报错，因为参数1不是一个可迭代对象
     # 调用next(obj) 就相当于调用一次可迭代对象（obj）的__next__方法,即对可迭代对象迭代一次
-    print(next(school))
+    print("next(school)= ", next(school))
+    # print("next(1)= ", next(1))  # 报错，因为参数1不是一个迭代器
 
     # 可以看出，list、tuple、dict、字符串都是 可迭代的对象
     for temp in school:
