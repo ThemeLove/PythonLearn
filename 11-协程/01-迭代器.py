@@ -3,6 +3,9 @@ from collections import Iterator
 
 
 class School:
+    """
+    自定义迭代器对象
+    """
     def __init__(self):
         self.teachers = list()  # 创建一个空列表
         self.index = 0
