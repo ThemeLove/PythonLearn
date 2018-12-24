@@ -39,7 +39,6 @@ def main():
     except StopIteration as e:
         print("e.value= %s" % e.value)
 
-
     # 再获取一次就会有异常产生，这里手动捕获
     try:
         while True:

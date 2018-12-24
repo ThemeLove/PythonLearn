@@ -12,7 +12,6 @@ def fibonacci(num):
         count += 1
 
 
-
 def main():
     #  1.将列表生成式的[] 变成（）即可创建一个生成器对象
     list1 = [m + str(n) for m in "abc" for n in range(7) if n % 2 == 0]
@@ -39,8 +38,6 @@ def main():
     print("fib2 type= ", type(fib2))
     print("fib3 type= ", type(fib3))
     print("fib10 type= ", type(fib10))
-
-
 
     # print("fib0 next= ", next(fib0)) 特别说明，这里如果直接调用，会抛出一个StopIteration的异常；
     # 但是下面的for.. in 却不会报这个异常，说明for..in中默认捕获了这个异常
