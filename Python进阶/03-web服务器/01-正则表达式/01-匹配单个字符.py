@@ -51,8 +51,5 @@ def main():
     print("ret15=",ret15.group())
 
 
-    # . :匹配一个字符
-
-
 if __name__ == "__main__":
     main()
