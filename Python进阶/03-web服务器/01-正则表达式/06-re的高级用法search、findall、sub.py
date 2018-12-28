@@ -35,6 +35,11 @@ def main():
     ret4 = re.sub(r"\d+", replace_method, test_str4)
     print("ret4=", ret4)
 
+    # 根据匹配切割字符串,返回是一个列表
+    test_str5 = "info:aaa bbb:ccc ddd"
+    ret5 = re.split(r":| ", test_str5)  # 用： 和 | 切割字符串
+    print("ret5=", ret5)
+
 
 if __name__ == "__main__":
     main()
