@@ -19,12 +19,12 @@ def main():
     print("ret2=", ret2.group())
     print("ret2's group(1)=", ret2.group(1))
 
-    # 一个分组
+    # 一个分组 :用数字当分组名
     html_str1 = "<h1>我来演示正则表达式分组</h1>"
     ret3 = re.match(r"<(\w*)>.*</(\1)>", html_str1)
     print("ret3=", ret3.group())
 
-    # 二个分组
+    # 二个分组 ：用数字当分组名
     html_str2 = "<body><h1>我来演示正则表达式分组</h1></body>"
     ret4 = re.match(r"<(\w*)><(\w*)>.*</(\2)></(\1)>", html_str2)
     print("ret4=", ret4.group())
@@ -40,7 +40,7 @@ def main():
     print("ret5's name1=", ret5.group("name1"))
     print("ret5's name2=", ret5.group("name2"))
 
-    # 匹配失败，因为html_str4不满足分组1前后内容必须一样
+    # 匹配失败，因为html_str4不满足分组name1前后内容必须一样
     html_str4 = "<body><h1>我来演示正则表达式分组</h1></header>"
     ret6 = re.match(r"<(?P<name1>\w*)><(?P<name2>\w*)>.*</(?P=name2)></(?P=name1)>", html_str4)
     print("type or ret6=", type(ret6))
