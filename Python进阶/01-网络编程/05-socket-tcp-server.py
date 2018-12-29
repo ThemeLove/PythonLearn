@@ -5,14 +5,14 @@ def main():
     # 1.创建tcp套接字,socket.AF_INET表示ipv4,socket.SOCK_STREAM表示tcp
     tcp_server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     # 2.绑定ip和端口号
-    server_addr=("192.168.199.170",8081)
+    server_addr = ("10.200.202.22", 8081)
     tcp_server_socket.bind(server_addr)
     # 3.开启监听
     tcp_server_socket.listen(128)
     print("服务器%s已经开启了，等待连接中..." %(server_addr,))
     # 4.循环等待客户端连接
     while True:
-        new_client_socket,client_addr = tcp_server_socket.accept()
+        new_client_socket, client_addr = tcp_server_socket.accept()
 
         print("%s连接上了" % (client_addr,))
 

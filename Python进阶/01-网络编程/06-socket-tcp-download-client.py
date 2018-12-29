@@ -14,7 +14,7 @@ def main():
     tcp_download_client_socket.send(download_file_name.encode("utf-8"))
     receive_data=tcp_download_client_socket.recv(1024)
     if receive_data :
-        with open("new_%s" % download_file_name,"w",encoding="utf-8") as f:
+        with open("new_%s" % download_file_name, "w",encoding="utf-8") as f:
             f.write(receive_data.decode("GBK"))
 
     # 4.关闭tcp套接字

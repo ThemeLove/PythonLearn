@@ -24,8 +24,8 @@ def main():
             if receive_data:
                 file_content=None
                 try:
-                    f = open(receive_data.decode("GBK"),"r")
-                    file_content=f.read(1024)
+                    f = open(receive_data.decode("GBK"), "r")
+                    file_content = f.read(1024)
                 except Exception as e:
                     print(e)
                 if file_content:
