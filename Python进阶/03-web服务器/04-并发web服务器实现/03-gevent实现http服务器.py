@@ -1,4 +1,5 @@
-import multiprocessing
+import gevent
+from gevent import monkey
 import socket
 import re
 import logging
@@ -43,25 +44,20 @@ def serve_client(client_socket):
 
 
 def main():
-    # 创建tcp服务端套接字
+    # 创建tcp服务端socket
     tcp_server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # 绑定服务端ip和端口
-    tcp_server_socket.bind(("10.200.202.22", 8887))
+    tcp_server_socket.bind(("10.200.202.22", 8890))
     print("服务器（10.200.202.22)已开启，等待连接中...")
     # 开启监听
     tcp_server_socket.listen(1024)
-
+    # 将程序中用到的耗时操作的代码，切换为gevent中自己实现的模块,即打补丁
+    monkey.patch_all()
     while True:
-        # 接收客户端连接
         tcp_client_socket, tcp_client_address = tcp_server_socket.accept()
-        # 创建一个进程
-        p = multiprocessing.Process(target=serve_client, args=(tcp_client_socket, ))
-        # 开启进程
-        p.start()
-        # 在主线程关闭客户端连接，
-        tcp_client_socket.close()
-    # 关闭服务端连接
-    tcp_server_socket.close()
+        gevent.joinall([ # 将协程统一管理
+            gevent.spawn(serve_client, tcp_client_socket)
+        ])
 
 
 if __name__ == "__main__":
