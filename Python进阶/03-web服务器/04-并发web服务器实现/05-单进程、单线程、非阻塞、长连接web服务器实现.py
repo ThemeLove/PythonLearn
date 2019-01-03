@@ -64,7 +64,7 @@ def main():
     # 创建tcp服务端socket
     tcp_server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # 绑定服务器socket的ip和端口号，ip传空表示绑定本地
-    tcp_server_socket.bind(("", 8111))
+    tcp_server_socket.bind(("", 8112))
     print("服务器（10.200.202.22)已开启，等待连接中...")
     # 开启监听
     tcp_server_socket.listen(1024)
