@@ -53,8 +53,9 @@ def serve_client(client_socket, client_socket_list):
             response_header_fail += "Content-Length:%d\r\n\r\n" % (len(response_body.encode("utf-8")),)
             client_socket.send(response_header_fail.encode("utf-8"))
             client_socket.send(response_body.encode("utf-8"))
-    else:  # 如果接收的数据为空，则说明客户端关闭了连接
+    else:  # 如果接收的数据为空，则说明客户端关闭了连接，服务端这时可以关闭该连接
         # 处理完毕关闭socket，并将其从列表中移除
+        print("客户端断开连接...")
         client_socket.close()
         client_socket_list.remove(client_socket)
 
