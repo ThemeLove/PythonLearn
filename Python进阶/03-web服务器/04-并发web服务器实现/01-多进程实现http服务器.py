@@ -39,7 +39,7 @@ def serve_client(client_socket):
         client_socket.send("error----->params error".encode("utf-8"))
         pass
     # 关闭socket
-    client_socket.close()
+    client_socket.close()  # 在子进程也关闭socket连接
 
 
 def main():
@@ -58,7 +58,7 @@ def main():
         p = multiprocessing.Process(target=serve_client, args=(tcp_client_socket, ))
         # 开启进程
         p.start()
-        # 在主线程关闭客户端连接，
+        # 在主进程关闭客户端连接才有用，因为在主进程持有的才是客户端socket连接的直接引用，子进程只是主进程的拷贝
         tcp_client_socket.close()
     # 关闭服务端连接
     tcp_server_socket.close()
