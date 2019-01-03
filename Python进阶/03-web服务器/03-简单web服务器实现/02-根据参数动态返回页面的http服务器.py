@@ -3,6 +3,13 @@ import re
 import logging
 
 
+"""
+该版本为单进程、单线程、while True简单http服务器版本
+1.因为不涉及多进程多线程，所以当一个socket连接时，会阻塞其他客户端socket的连接；
+只有当一个客户端连接socket处理完成时，才能处理下一个客户端socket连接
+"""
+
+
 def serve_client(client_socket):
     client_data = client_socket.recv(1024).decode("utf-8")
     print("\r\n\r\n\r\nstart>>>>>>>>>>>>>>>>>>>>")
@@ -16,7 +23,7 @@ def serve_client(client_socket):
             print("list[1]=", client_data_list[0])
             client_param = re.search(r"/[^ ]*", client_data_list[0]).group()
 
-    # 根据是否成功获取到客户端参数，费别处理
+    # 根据是否成功获取到客户端参数，分别处理
     response_header_ok = "HTTP/1.1 200 OK\r\n\r\n"  # 注意header 和 body之间时通过一个空行来区分的
     response_header_fail = "HTTP/1.1 404 FAIL\r\n\r\n"
     if client_param:
@@ -38,7 +45,7 @@ def serve_client(client_socket):
         client_socket.send("error----->params error".encode("utf-8"))
         pass
     # 关闭socket
-    client_socket.close()
+    client_socket.close()  # 需要手动关闭客户端套接字，不然浏览器不知道服务端的响应是否结束，会一直转圈圈。
 
 
 def main():
@@ -51,10 +58,10 @@ def main():
     tcp_server_socket.listen(1024)
     # 循环接受客户端的连接
     while True:
-        client_socket, client_address = tcp_server_socket.accept()
+        client_socket, client_address = tcp_server_socket.accept()  # 默认阻塞状态，只有当有新的客户端连接时才能解阻塞
         serve_client(client_socket)
     # 关闭服务端socket
-    # tcp_server_socket.close()
+    tcp_server_socket.close()
 
 
 if __name__ == "__main__":

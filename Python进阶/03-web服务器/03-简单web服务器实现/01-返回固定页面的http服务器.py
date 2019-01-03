@@ -54,11 +54,11 @@ def main():
     tcp_server_socket.listen(1024)
     while True:
         # 接收客户端连接
-        tcp_client_socket,client_address = tcp_server_socket.accept()
+        tcp_client_socket, client_address = tcp_server_socket.accept()
         handle_client_socket(tcp_client_socket)
     # 关闭服务端socket
     tcp_server_socket.close()
 
 
-if __name__  == "__main__":
+if __name__ == "__main__":
     main()
