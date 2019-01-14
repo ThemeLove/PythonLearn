@@ -12,6 +12,5 @@ def main():
     print("type of rf1=", type(rf1.read(1024)))
 
 
-
 if __name__ == "__main__":
     main()
