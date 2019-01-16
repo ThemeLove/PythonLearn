@@ -1,0 +1,361 @@
+
+/*首页导航开始*/
+.nav-items{
+	height: 77px;
+	background-color: #fff;
+}
+
+.nav-items ul{
+	width: inherit;
+	height: inherit;
+	height: 77px;
+	padding-left: 0px;
+}
+
+.nav-items ul li{
+	height:77px;
+	line-height: 77px;
+	float: left;
+	list-style: none;
+	margin-right: 20px;
+}
+
+.nav-items li a {
+	font: 700 18px "Microsoft YaHei";
+	color:#000;
+	list-style: none;
+}
+
+.nav-items li:first-child a{
+	border-bottom: 1px solid red;
+}
+
+/*首页导航结束*/
+
+/*早餐列表开始*/
+.breakfast-title{
+	font: 700 20px "Microsoft YaHei";
+	height: 80px;
+	text-align: center;
+	line-height: 80px;
+	color: #000;
+}
+
+.breakfast-item li{
+	width: 25%;
+	height: 275px;
+	float: left;
+	position: relative;
+}
+
+.breakfast-item li a{
+	width: 100%;
+	height: 275px;
+	display: block;
+	background-repeat: repeat-x;
+} 
+
+.breakfast-item .bread{
+	background-image: url(../images/bread.png);
+}
+
+.breakfast-item .dumpling{
+	background-image: url(../images/dumpling.png);
+}
+
+.breakfast-item .zongzi{
+	background-image: url(../images/zongzi.png);
+}
+
+.breakfast-item .milk{
+	background-image: url(../images/milk.png);
+}
+
+.breakfast-item li .intro{
+	padding-left: 20px;
+	width: 100%;
+	height: 60px;
+	background-color:rgba(255,255,255,0.5);
+	opacity: 0.6;
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
+}
+
+.intro h3{
+	width: 8em;
+	font: 700 18px/30px "Microsoft YaHei";
+	white-space:nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.intro span{
+	font:12px "Microsoft YaHei";
+}
+
+.breakfast-item li .tip{
+	width: 140px;
+	height: 40px;
+	background-color: #60a531;
+	position: absolute;
+	right: 10px;
+	bottom: 30px;
+	font: 700  18px/40px "Microsoft YaHei";
+	color: #fff;
+	text-align: center;
+}
+/*早餐列表结束*/
+
+/*大搜索框开始*/
+.big-search{
+	height: 100px;
+	background-color: #3f3a32;
+	overflow: hidden;
+}
+
+.big-search .bigsearch-area{
+	width: 728px;
+	height: 77px;
+	margin:12px auto;
+	background-color: #f00;
+
+}
+
+.bigsearch-area .bigsearch-txt{
+	width: 555px;
+	height: inherit;
+	border:none;
+	outline: none;
+	float: left;
+
+	font: 18px "Microsoft YaHei";
+	color: #000;
+	text-indent: 1em;
+}
+
+.bigsearch-area .bigsearch-btn{
+	width: 173px;
+	height: inherit;
+	border:none;
+	outline: none;
+	float: left;
+
+	font: 18px "Microsoft YaHei";
+	color: white;
+	background-color: #f00;
+	text-align: center;
+}
+
+/*大搜索框结束*/
+
+/*水果推荐部分开始*/
+.fruit-title{
+	height: 80px;
+	text-align: center;
+	font: 700 20px/80px "Microsoft YaHei";
+	color: #000;
+}
+
+.fruit-main{
+	height: 500px;
+	background-color: transparent;
+	position: relative;
+}
+
+.fruit-main ul{
+	width: 900px;
+	height: 500px;
+	margin: 0px auto;
+}
+
+
+.fruit-main .arrow-left{
+	width: 42px;
+	height: 69px;
+	background: url(../images/nav-arrow.png) no-repeat;
+	position: absolute;
+	background-position:-83px; 
+	left: 0px;
+	top: 215px
+}
+
+.fruit-main .arrow-left:hover{
+	background-position: 0px;
+}
+
+.fruit-main .arrow-right{
+	width: 42px;
+	height: 69px;
+	background: url(../images/nav-arrow.png) no-repeat;
+	position: absolute;
+	background-position:-125px; 
+	right:0px;
+	top: 215px
+}
+
+.fruit-main .arrow-right:hover{
+	background-position:-42px; 
+}
+
+.fruit-main li{
+	width: 300px;
+	height: 250px;
+	background-color: #0f0;
+	display: block;
+	float: left;
+	margin-top: 10px;
+	position: relative;
+}
+
+.fruit-main li a{
+	width: 300px;
+	height: 250px;
+	display: block;
+	float: left;
+}
+
+.fruit-main li .fruit-one{
+	background: url(../images/fruit_1.png) no-repeat;
+}
+
+.fruit-main li .fruit-two{
+	background: url(../images/fruit_2.png) no-repeat;
+}
+
+.fruit-main li .fruit-three{
+	background: url(../images/fruit_3.png) no-repeat;
+}
+
+.fruit-main li .fruit-four{
+	background: url(../images/fruit_4.png) no-repeat;
+}
+
+.fruit-main li .fruit-five{
+	background: url(../images/fruit_5.png) no-repeat;
+}
+
+.fruit-main li .fruit-six{
+	background: url(../images/fruit_6.png) no-repeat;
+}
+
+.fruit-main .intro{
+	width: inherit;
+	height: 70px;
+	background-color: #fff;
+	opacity: 0.5;
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
+}
+
+.fruit-main .intro h3{
+	font: 25px/40px "Microsoft YaHei";
+	height: 40px;
+	color: #000;
+	padding-left: 10px;
+}
+
+.fruit-main .intro span{
+	font: 15px/30px "Microsoft YaHei";
+	height: 30px;
+	color: #000;
+	padding-left: 10px;
+}
+/*水果推荐部分结束*/
+
+/*最新食谱开始*/
+ .newest-cookbook-title{
+ 	margin-top: 30px;
+ 	height: 80px;
+ 	text-align: center;
+	font:700 20px/80px "Microsoft YaHei";
+	color: #000;
+  }
+
+ .newest-cookbook {
+	height: 337px;
+	background-color: #fff;
+ }
+
+ .newest-cookbook li{
+	height: 337px;
+	width: 333px;
+	background-color: #fff;
+	float: left;
+	position: relative;
+ }
+
+ .newest-cookbook li .beef{
+ 	height: 337px;
+ 	width: 333px;
+	background: url(../images/beef.png) no-repeat;
+	display: block;
+ }
+
+ .newest-cookbook li .bone{
+ 	height: 337px;
+ 	width: 333px;
+	background: url(../images/bone.png) no-repeat;
+	display: block;
+ }
+ .newest-cookbook li .intro{
+ 	height: 105px;
+ 	width:100%;
+ 	background-color: rgba(255,100,100,0.3);
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
+	opacity: 0.5;
+ }
+
+ .newest-cookbook li .intro h3{
+ 		padding-left: 25px;
+ 		height: 65px;
+		font: 700 25px/65px "Microsoft YaHei";
+		color: #000;
+}
+
+.newest-cookbook li .intro span{
+ 		padding-left: 25px;
+ 		height: 40px;
+		font: 12px/40px "Microsoft YaHei";
+		color: #000;
+ }
+
+ .hot-cookbook{
+ 	padding-left: 5px;
+ }
+
+.hot-cookbook .hot-title{
+	height: 35px;
+	width: 333px;
+	font: 700 25px/35px "Microsoft YaHei";
+	color: rgba(0,0,0,0.5);
+	text-align: center;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 10px;
+}
+
+.hot-cookbook ul li{
+	width: 100px;
+	height: 40px;
+	background-color: #99CC99;
+	border: 1px solid #666;
+	text-align: center;
+	line-height: 40px;
+	margin-right: 5px;
+	margin-bottom: 8px;
+}
+
+.hot-cookbook .enter-cookbook{
+	width: 200px;
+	height: 50px;
+	background-color: #f00;
+	color: white;
+	margin-top: 20px;
+	font-size: 18px;
+}
+/*最新食谱结束*/
+
+

@@ -1,0 +1,44 @@
+* {
+	margin:0px;
+	padding:0px;
+}
+
+a {
+	text-decoration: none;
+	color: #808080;
+}
+
+input {
+	border:none;
+	outline: none;
+}
+
+/*通用版心*/
+.w {
+	width: 1000px;
+	margin: 0 auto;
+}
+
+/*向左浮动*/
+.fl {
+	float:left;
+}
+/*向右浮动*/
+.fr {
+	float:right;
+}
+/*清除浮动,兼容ie浏览器*/
+.clear-fix {
+	zoom:1;
+}
+/*清除浮动*/
+.clear-fix:after {
+	display:block;
+	content:"";
+	clear:both;
+}
+
+/*隐藏*/
+.hidden{
+	visibility: hidden;
+}

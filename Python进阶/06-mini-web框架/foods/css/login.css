@@ -1,0 +1,100 @@
+/*登录框部分开始*/
+.login-box{
+	width: 450px;
+	height: 620px;
+	background-color:#fff;
+	margin-top: 100px;
+	padding-left: 16px;
+	padding-right: 16px;
+}
+
+.login-box h3{
+	font: 30px/50px "Microsoft YaHei";
+}
+.user-pwd{
+	background-color: #fff;
+}
+
+.user-pwd input{
+	display: block;
+	width: 100%;
+	height: 60px;
+	font-size: 20px;
+	text-indent: 56px;
+	background-repeat: no-repeat;
+	background-position: 9px 8px;
+}
+
+.user-name{
+	background-image:url(../images/user-bg.png);
+}
+
+.user-password {
+	margin-top: 20px;
+	background-image:url(../images/pwd-bg.png);
+}
+
+/*登录框部分结束*/
+
+/*自动登录 忘记密码部分  开始*/
+.tools{
+	margin-top: 20px;
+	color: #808080;
+}
+
+.tools input{
+	width: 20px;	
+	height: 20px;
+}
+
+.tools a{
+	float: right;
+}
+
+.login-btn{
+	display: block;
+	width: 100%;
+	height: 60px;
+	background-color: #e60012;
+	color: #fff;
+	border: none;
+	margin-top: 20px;
+	font-size: 30px;
+}
+/*自动登录 忘记密码部分 结束*/
+
+/*其他登录方式部分 开始*/
+.others {
+	margin-top: 20px;
+}
+
+.others p{
+	margin-bottom: 20px;
+	font-size: 20px;
+}
+
+
+.others li{
+	list-style:none;
+	text-indent:40px;
+	height: 40px;
+	float: left;
+	margin-left: 60px;
+	text-align: center;
+	line-height: 40px;
+}
+
+.others .tencent{
+	margin-left: 0px;
+	background: url(../images/qq.png) no-repeat 10px 8px;
+}
+
+.others .weibo{
+	background: url(../images/weibo.png)  no-repeat 0px 6px;
+}
+
+.others .email{
+	background: url(../images/email.png)  no-repeat 0px 6px;
+}
+
+/*其他登录方式部分 结束*/

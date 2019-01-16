@@ -33,9 +33,5 @@ def main():
     print("b4=", b())
 
 
-
-
-
-
 if __name__ == "__main__":
     main()
