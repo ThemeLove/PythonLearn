@@ -1,19 +1,21 @@
-def application(client_params, set_response_header):
+def application(client_params, get_response_status_line_and_header):
     print("mini_frame----->application")
     print("client_params", client_params)
     if client_params:
-        set_response_header("200", [("Content-Type", "text/html;charset=utf8")])
+        response_status_line_and_header = get_response_status_line_and_header("200", [("Content-Type", "text/html;charset=utf8")])
         path = client_params["path"]
         if path == "/index.py":
-            return index()
+            response_body = index()
         elif path == "/center.py":
-            return center()
+            response_body = center()
         else:
-            set_response_header("404", [("Content-Type", "text/html;charset=utf8")])
-            return "404 没有找到相关资源"
+            response_status_line_and_header = get_response_status_line_and_header("404", [("Content-Type", "text/html;charset=utf8")])
+            response_body =  "404 没有找到相关资源"
     else:
-        set_response_header("404", [("Content-Type", "text/html;charset=utf8")])
-        return "404 没有找到相关资源"
+        response_status_line_and_header = get_response_status_line_and_header("404", [("Content-Type", "text/html;charset=utf8")])
+        response_body = "404 没有找到相关资源"
+
+    return response_status_line_and_header + response_body
 
 
 def index():

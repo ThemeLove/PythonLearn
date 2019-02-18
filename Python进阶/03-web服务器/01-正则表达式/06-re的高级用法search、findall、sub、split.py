@@ -20,7 +20,7 @@ def main():
     ret1 = re.search(r"abc", test_str1)
     print("ret1=", ret1.group())
 
-    # findall()，也是查找内容，返回值时一个列表，返回所有满足条件的内容
+    # findall()，也是查找内容，返回值是一个列表，返回所有满足条件的内容
     test_str2 = "12345abc@abc$abc"
     ret2 = re.findall(r"abc", test_str2)
     print("ret2=", ret2)

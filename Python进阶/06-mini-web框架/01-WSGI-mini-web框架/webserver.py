@@ -12,10 +12,9 @@ class WSGIServer:
         self.port = port
         self.application = application
         self.static_path = static_path
-        self.response_header = ""
 
     def run(self):
-        # 绑定端口
+        # 绑定端口,ip穿“”表示默认绑定本地ip,可以通过ifconfig命令来查看
         self.server_socket.bind(("", self.port))
         # 开启监听
         self.server_socket.listen(1024)
@@ -29,18 +28,23 @@ class WSGIServer:
             client_socket.close()
         self.server_socket.close()
 
-    def set_response_header(self, status, response_header_params):
-        response_header = ""
+    @staticmethod
+    def get_response_status_line_and_header(status, response_header_params):
+        """设置http响应状态行和响应头"""
+
         if status == "200":
-            status_line = "HTTP/1.1 %s OK\r\n" % status
+            response_status_line = "HTTP/1.1 %s OK\r\n" % status
         elif status == "404":
-            status_line = "HTTP/1.1 %s Fail\r\n" % status
+            response_status_line = "HTTP/1.1 %s Fail\r\n" % status
         else:
-            status_line = "HTTP/1.1 %s Fail\r\n" % status
-        response_header += status_line
+            response_status_line = "HTTP/1.1 %s Fail\r\n" % status
+
+        response_header = ""
+        #  拼接response_header
         for temp in response_header_params:
             response_header += "%s:%s\r\n" % (temp[0], temp[1])
-        self.response_header = response_header
+
+        return response_status_line + response_header + "\r\n"
 
     def server_client(self, client_socket):
         client_data = client_socket.recv(1024).decode("utf-8")
@@ -56,8 +60,10 @@ class WSGIServer:
                 client_param = re.search(r"/[^ ]*", client_data_list[0]).group()
 
         # 根据是否成功获取到客户端参数，分别处理
-        response_header_ok = "HTTP/1.1 200 OK\r\n\r\n"  # 注意header 和 body之间时通过一个空行来区分的
-        response_header_fail = "HTTP/1.1 404 FAIL\r\n\r\n"
+        # 注意header 和 body之间时通过一个空行来区分的
+        response_status_line_and_header_ok = self.get_response_status_line_and_header("200", [("Content-Type", "text/html;charset=utf8")])
+        response_status_line_and_header_fail = self.get_response_status_line_and_header("404", [("Content-Type", "text/html;charset=utf8")])
+
         if not client_param.endswith(".py"):  # 说明请求的是静态资源
             if client_param:
                 if client_param == "/":
@@ -66,25 +72,23 @@ class WSGIServer:
                 print("response_path=", response_path)
                 try:
                     rf = open(response_path, "rb")
-                    client_socket.send(response_header_ok.encode("utf-8"))
+                    client_socket.send(response_status_line_and_header_ok.encode("utf-8"))
                     client_socket.send(rf.read())
                     rf.close()
                 except IOError as e:
-                    client_socket.send(response_header_fail.encode("utf-8"))
+                    client_socket.send(response_status_line_and_header_fail.encode("utf-8"))
                     client_socket.send("error----->file not found".encode("utf-8"))
                     logging.exception(e)
             else:  # 成功获取到用户的参数
-                client_socket.send(response_header_fail.encode("utf-8"))
+                client_socket.send(response_status_line_and_header_fail.encode("utf-8"))
                 client_socket.send("error----->params error".encode("utf-8"))
                 pass
         else:  # 动态返回的结果
             client_params = dict()
             client_params["path"] = client_param
 
-            body = self.application(client_params, self.set_response_header)
-
-            print("response_header", self.response_header)
-            response = "%s\r\n\r\n%s" % (self.response_header, body)
+            response = self.application(client_params, self.get_response_status_line_and_header)
+            print("response:", response)
             client_socket.send(response.encode("utf-8"))
 
         # 关闭socket
@@ -97,8 +101,9 @@ def main():
         try:
             port = int(args[1])
             frame_app_name = args[2]
-        except Exception as e:
-            print("端口输入错误！")
+        except ValueError as e:
+            logging.exception(e)
+            print("参数输入错误！")
             return
 
         ret = re.match("([^:]+):(.*)", frame_app_name)
@@ -114,6 +119,7 @@ def main():
 
     with open("./webserver.conf") as f:
         server_conf = f.read()
+    print("type of server_conf", type(server_conf))
     conf_dict = eval(server_conf)
     print("conf_dict", conf_dict)
     static_path = conf_dict["static_path"]
