@@ -61,8 +61,8 @@ class WSGIServer:
 
         # 根据是否成功获取到客户端参数，分别处理
         # 注意header 和 body之间时通过一个空行来区分的
-        response_status_line_and_header_ok = self.get_response_status_line_and_header("200", [("Content-Type", "text/html;charset=utf8")])
-        response_status_line_and_header_fail = self.get_response_status_line_and_header("404", [("Content-Type", "text/html;charset=utf8")])
+        response_status_line_and_header_ok = self.get_response_status_line_and_header("200", [("Server", "webserver")])
+        response_status_line_and_header_fail = self.get_response_status_line_and_header("404", [("Server", "webserver")])
 
         if not client_param.endswith(".py"):  # 说明请求的是静态资源
             if client_param:
