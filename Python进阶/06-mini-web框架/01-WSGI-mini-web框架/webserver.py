@@ -55,10 +55,10 @@ class WSGIServer:
                 print("list[1]=", client_data_list[0])
                 client_param = re.search(r"/[^ ]*", client_data_list[0]).group()
 
-        # 根据是否成功获取到客户端参数，费别处理
+        # 根据是否成功获取到客户端参数，分别处理
         response_header_ok = "HTTP/1.1 200 OK\r\n\r\n"  # 注意header 和 body之间时通过一个空行来区分的
         response_header_fail = "HTTP/1.1 404 FAIL\r\n\r\n"
-        if not client_param.endswith(".py"):  # 说明请求的时静态资源
+        if not client_param.endswith(".py"):  # 说明请求的是静态资源
             if client_param:
                 if client_param == "/":
                     client_param = "/index.html"
