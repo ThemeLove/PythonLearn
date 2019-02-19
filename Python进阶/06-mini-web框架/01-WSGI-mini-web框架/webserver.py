@@ -64,10 +64,8 @@ class WSGIServer:
         response_status_line_and_header_ok = self.get_response_status_line_and_header("200", [("Server", "webserver")])
         response_status_line_and_header_fail = self.get_response_status_line_and_header("404", [("Server", "webserver")])
 
-        if not client_param.endswith(".py"):  # 说明请求的是静态资源
-            if client_param:
-                if client_param == "/":
-                    client_param = "/index.html"
+        if client_param and (not client_param.endswith(".html")):  # 说明请求的是静态资源
+            if client_param != "/": # 排除没有参数和“/”，因为这2中情况按/index.html处理
                 response_path = self.static_path + client_param
                 print("response_path=", response_path)
                 try:
@@ -79,17 +77,19 @@ class WSGIServer:
                     client_socket.send(response_status_line_and_header_fail.encode("utf-8"))
                     client_socket.send("error----->file not found".encode("utf-8"))
                     logging.exception(e)
-            else:  # 成功获取到用户的参数
-                client_socket.send(response_status_line_and_header_fail.encode("utf-8"))
-                client_socket.send("error----->params error".encode("utf-8"))
-                pass
-        else:  # 动态返回的结果
-            client_params = dict()
-            client_params["path"] = client_param
 
-            response = self.application(client_params, self.get_response_status_line_and_header)
-            print("response:", response)
-            client_socket.send(response.encode("utf-8"))
+        if client_param:
+            if client_param == "/":
+                client_param = "/index.html"
+
+            # 动态返回的结果
+            if client_param.endswith(".html"):
+                client_params = dict()
+                client_params["path"] = client_param
+
+                response = self.application(client_params, self.get_response_status_line_and_header)
+                # print("response:", response)
+                client_socket.send(response.encode("utf-8"))
 
         # 关闭socket
         client_socket.close()  # 在子进程也关闭socket连接
