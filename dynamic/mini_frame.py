@@ -1,6 +1,8 @@
 import pymysql
 import re
 import logging
+import json
+
 
 
 URL_FUNC_DICT = dict()
@@ -147,10 +149,16 @@ def add_focus(ret):
     # 1.判断是否存在该只股票
     sql_is_has_stock="""select * from info where code=%s"""
     cursor.execute(sql_is_has_stock, (stock_code,))
+    response_dict = dict()
+    response_dict["status"] = 0
+    response_dict["msg"] = ""
+    response_dict["data"] = ""
     if not cursor.fetchone():  # 没有该只股票
         conn.close()
         cursor.close()
-        return "没有该只股票，创业公司，请大哥手下留情"
+        response_dict["msg"] = "success"
+        response_dict["data"] = "没有该只股票，创业公司，请大哥手下留情"
+        return json.dumps(response_dict)
 
     # 2.判断是否已经关注了该只股票
     sql_is_focus_stock = """select * from info as i inner join focus as f on i.id=f.info_id where i.code=%s"""
@@ -158,7 +166,9 @@ def add_focus(ret):
     if cursor.fetchone(): # 说明已经关注过该只股票
         conn.close()
         cursor.close()
-        return "已经关注过该只股票，请勿重复关注"
+        response_dict["msg"] = "success"
+        response_dict["data"] = "已经关注过该只股票，请勿重复关注"
+        return json.dumps(response_dict)
 
     # 3.关注该只股票
     try:
@@ -167,7 +177,13 @@ def add_focus(ret):
         conn.commit() # 修改操作要提交，pymysql默认开启了事物
         conn.close()
         cursor.close()
-        return "关注股票(%s)成功！" % (stock_code,)
+        response_dict["status"] = 1
+        response_dict["msg"] = "success"
+        response_dict["data"] = "关注股票(%s)成功！" % (stock_code,)
+        return json.dumps(response_dict)
     except Exception as e:
         logging.exception(e)
-        return "关注失败，请稍后再试"
+        response_dict["status"] = 0
+        response_dict["msg"] = "success"
+        response_dict["data"] = "关注失败，请稍后再试"
+        return json.dumps(response_dict)
