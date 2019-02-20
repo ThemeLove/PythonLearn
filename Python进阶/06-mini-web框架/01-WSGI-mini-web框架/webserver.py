@@ -65,7 +65,7 @@ class WSGIServer:
         response_status_line_and_header_fail = self.get_response_status_line_and_header("404", [("Server", "webserver")])
 
         if client_param and (not client_param.endswith(".html")):  # 说明请求的是静态资源
-            if client_param != "/": # 排除没有参数和“/”，因为这2中情况按/index.html处理
+            if client_param != "/":  # 排除没有参数和“/”，因为这2中情况按/index.html处理
                 response_path = self.static_path + client_param
                 print("response_path=", response_path)
                 try:
