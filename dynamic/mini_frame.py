@@ -6,6 +6,7 @@ from urllib.parse import unquote
 
 
 URL_FUNC_DICT = dict()
+DATABASE_IP = "10.200.202.16"  # 这样定义的目的是方便家里电脑远程连接公司数据库，共用一套代码
 
 
 def route(url):
@@ -78,7 +79,7 @@ def index(ret):
     with open("./templates/index.html") as f:
         content = f.read()
 
-    conn = pymysql.connect(host="10.200.202.16", port=3306, user="root", password="themelove", database="stock_db", charset="utf8")
+    conn = pymysql.connect(host=DATABASE_IP, port=3306, user="root", password="themelove", database="stock_db", charset="utf8")
     cursor = conn.cursor()
 
     sql = """select * from info;"""
@@ -129,7 +130,7 @@ def center(ret):
     content = ""
     with open("./templates/center.html") as f:
         content = f.read()
-    conn = pymysql.connect(host="localhost", port=3306, user="root", password="themelove", database="stock_db",
+    conn = pymysql.connect(host=DATABASE_IP, port=3306, user="root", password="themelove", database="stock_db",
                            charset="utf8")
     cursor = conn.cursor()
     sql = """select i.code,i.short,i.chg,i.turnover,i.price,i.highs,f.note_info from info as i inner join focus as f on i.id=f.info_id;"""
@@ -168,7 +169,7 @@ def center(ret):
 @route(r"/focus/(\d+)\.html")
 def focus(ret):
     """添加指定股票到关注列表"""
-    conn = pymysql.connect(host="localhost", port=3306, user="root", password="themelove", database="stock_db", charset="utf8")
+    conn = pymysql.connect(host=DATABASE_IP, port=3306, user="root", password="themelove", database="stock_db", charset="utf8")
     cursor = conn.cursor()
     stock_code = ret.group(1)
     print("stock_code=", stock_code)
@@ -218,7 +219,7 @@ def focus(ret):
 @route(r"/unfocus/(\d+)\.html")
 def unfocus(ret):
     """取消关注指定股票"""
-    conn = pymysql.connect(host="localhost", port=3306, user="root", password="themelove", database="stock_db",
+    conn = pymysql.connect(host=DATABASE_IP, port=3306, user="root", password="themelove", database="stock_db",
                            charset="utf8")
     cursor = conn.cursor()
     stock_code = ret.group(1)
@@ -275,7 +276,7 @@ def show_update_page(ret):
 
     stock_code = ret.group(1)
     #  1.连接数据库
-    conn = pymysql.connect(host="localhost", port=3306, user="root", password="themelove", database="stock_db", charset="utf8")
+    conn = pymysql.connect(host=DATABASE_IP, port=3306, user="root", password="themelove", database="stock_db", charset="utf8")
     cursor = conn.cursor()
 
     #  2.查询是否有该只股票
@@ -322,7 +323,7 @@ def update(ret):
     note_info = unquote(ret.group(2))  # 对用户输入进行urldecode解码，将乱码解析成用户可识别的字符串
 
     # 1.连接数据库
-    conn = pymysql.connect(host="localhost", port=3306, user="root", password="themelove", database="stock_db", charset="utf8")
+    conn = pymysql.connect(host=DATABASE_IP, port=3306, user="root", password="themelove", database="stock_db", charset="utf8")
     cursor = conn.cursor()
 
     #  2.查询是否有该只股票
