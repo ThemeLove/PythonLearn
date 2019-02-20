@@ -12,13 +12,45 @@
 
     <script>
         $(document).ready(function () {
-            $("input[name='toAdd']").each(function(){
-                var currentAdd = $(this);
-                currentAdd.click(function(){
-                    var stock_code = currentAdd.attr("systemIdValue");
-                    $.get("/add/"+stock_code+".html", function (data, status) {
-                        alert("数据："+data+"\r\n状态："+status);
-                    })
+            $("input[name='focus']").each(function(){
+                let focus_btn = $(this);
+                focus_btn.click(function(){
+                    let stock_code = focus_btn.attr("systemIdValue");
+                    let focus_str = focus_btn.attr("class");
+
+                    if (focus_str==="focus_on"){ //说明需要关注，点击去关注
+                        $.get("/focus/"+stock_code+".html",
+                            function (data, status) {
+                                if(status!="success"){
+                                    alert("关注失败：net error!")
+                                    return
+                                }
+                                console.log("data="+JSON.stringify(data));
+
+                                if(data.status==1){//关注成功
+                                    focus_btn.attr({"class":"focus_off","value":"取关"})
+                                }
+                                alert("状态："+status+"\r\n数据："+data.data)
+                            },
+                            "json"
+                        )
+                    }else if(focus_str==="focus_off"){ //说明已经关注,点击去取消关注
+                        $.get("/unfocus/"+stock_code+".html",
+                            function(data, status){
+                                if(status!="success"){
+                                    alert("取消关注失败：net error!");
+                                    return
+                                }
+                                console.log("data="+JSON.stringify(data));
+                                if(data.status==1){//取消关注成功
+                                    focus_btn.attr({"class":"focus_on","value":"关注"})
+                                }
+                                alert("状态："+status+"\r\n数据："+data.data)
+                            },
+                            "json"
+                        )
+                    }
+
                 })
             })
         })
