@@ -62,7 +62,8 @@ def application(client_params, get_response_status_line_and_header):
                 response_body = "没有对应的视图函数"
                 logger.warning("没有对应的视图函数")
         except Exception as e:
-            logger.warning("长生了异常\r\n：%s" % str(e))
+            response_body = "产生了异常：\r\n%s" % str(e)
+            logger.warning("产生了异常：\r\n%s" % str(e))
     else:
         response_status_line_and_header = get_response_status_line_and_header("404", [("Server", "webserver"), ("Content-Type", "text/html;charset=utf8")])
         response_body = "404 没有找到相关资源"
@@ -77,7 +78,7 @@ def index(ret):
     with open("./templates/index.html") as f:
         content = f.read()
 
-    conn = pymysql.connect(host="localhost", port=3306, user="root", password="themelove", database="stock_db", charset="utf8")
+    conn = pymysql.connect(host="10.200.202.16", port=3306, user="root", password="themelove", database="stock_db", charset="utf8")
     cursor = conn.cursor()
 
     sql = """select * from info;"""
