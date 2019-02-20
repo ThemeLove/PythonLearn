@@ -48,7 +48,7 @@ class WSGIServer:
 
     def server_client(self, client_socket):
         client_data = client_socket.recv(1024).decode("utf-8")
-        print("\r\n\r\n\r\nstart>>>>>>>>>>>>>>>>>>>>")
+        print("\r\n\r\nstart>>>>>>>>>>>>>>>>>>>>")
         print("client_data=", client_data)
 
         # 对客户端参数进行处理，获取用户浏览器输入的参数
@@ -72,10 +72,12 @@ class WSGIServer:
                     rf = open(response_path, "rb")
                     client_socket.send(response_status_line_and_header_ok.encode("utf-8"))
                     client_socket.send(rf.read())
+                    print("end>>>>>>>>>>>>>>>>>>>>\r\n\r\n")
                     rf.close()
                 except IOError as e:
                     client_socket.send(response_status_line_and_header_fail.encode("utf-8"))
                     client_socket.send("error----->file not found".encode("utf-8"))
+                    print("end>>>>>>>>>>>>>>>>>>>>\r\n\r\n")
                     logging.exception(e)
 
         if client_param:
@@ -90,6 +92,7 @@ class WSGIServer:
                 response = self.application(client_params, self.get_response_status_line_and_header)
                 # print("response:", response)
                 client_socket.send(response.encode("utf-8"))
+                print("end>>>>>>>>>>>>>>>>>>>>\r\n\r\n")
 
         # 关闭socket
         client_socket.close()  # 在子进程也关闭socket连接
