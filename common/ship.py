@@ -5,4 +5,4 @@ class Ship:
         self.speed = speed
 
     def msg(self):
-        print("name=%s,price=%d,speed=%d" %(self.name,self.price,self.speed))
+        print("name=%s,price=%d,speed=%d" % (self.name,self.price,self.speed))
