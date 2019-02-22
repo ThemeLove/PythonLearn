@@ -5,7 +5,7 @@ from urllib.parse import urlencode
 
 def main():
 
-    # urlencode(dict) 参数为字典，会先将字典转化为key=value&key1=value1....的字符串，在对其进行url编码
+    # urlencode(dict) 参数为字典，会先将字典转化为key=value&key1=value1....的字符串，再对其进行url编码
     dict_a = {"name": "zhangsan", "age": 23, "gender": "男"}
     encode_str = urlencode(dict_a)
     print("type of encode_str =" + str(type(encode_str)))
