@@ -10,3 +10,62 @@ class BookInfo(models.Model):
     # 出版日期， DateField说明是一个日期类型
     bpub_date = models.DateField()
 
+    def __str__(self):
+        return self.btitle
+
+
+class HeroInfo(models.Model):
+    '''图书英雄类'''
+    # 英雄名称
+    hname = models.CharField(max_length=20)
+    # 英雄性别，default=False代表男性
+    hgender = models.BooleanField(default=False)
+    # 评论
+    hcomment = models.CharField(max_length=128)
+    # 关系属性外键
+    hbook = models.ForeignKey('BookInfo', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.hname
+
+
+class NewsType(models.Model):
+    '''新闻类型类'''
+    type_name = models.CharField(max_length=20)
+
+
+class NewsInfo(models.Model):
+    # 新闻标题
+    title = models.CharField(max_length=128)
+    # 发布时间
+    pub_date = models.DateTimeField(auto_now_add=True)
+    # 信息内容
+    content = models.TextField()
+    # 关系属性，代表信息所属的类型
+    news_type = models.ManyToManyField('NewsType')
+
+
+
+class EmployeeBasicInfo(models.Model):
+    '''员工基本信息类'''
+    # 姓名
+    name = models.CharField(max_length=20)
+    # 性别
+    gender = models.BooleanField(default=False)
+    # 年龄
+    age = models.IntegerField()
+
+
+class EmployeeDetailInfo(models.Model):
+    # 联系地址
+    addr = models.CharField(max_length=256)
+    # 关系属性，代表员工基本信息
+    employee_basic = models.OneToOneField('EmployeeBasicInfo', on_delete=models.CASCADE)
+
+
+class AreaInfo(models.Model):
+    '''地区模型类'''
+    # 地区名称
+    atitle = models.CharField(max_length=20)
+    # 建立自关联
+    aparent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
