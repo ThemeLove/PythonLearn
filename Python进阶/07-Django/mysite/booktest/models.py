@@ -9,6 +9,12 @@ class BookInfo(models.Model):
     btitle = models.CharField(max_length=20)
     # 出版日期， DateField说明是一个日期类型
     bpub_date = models.DateField()
+    # 阅读量
+    bread = models.IntegerField(default=0)
+    # 评论量
+    bcomment = models.IntegerField(default=0)
+    # 删除标记
+    isDelete = models.BooleanField(default=False)
 
     def __str__(self):
         return self.btitle
@@ -22,6 +28,8 @@ class HeroInfo(models.Model):
     hgender = models.BooleanField(default=False)
     # 评论
     hcomment = models.CharField(max_length=128)
+    # 删除标记
+    isDelete = models.BooleanField(default=False)
     # 关系属性外键
     hbook = models.ForeignKey('BookInfo', on_delete=models.CASCADE)
 

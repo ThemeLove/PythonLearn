@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>书的关联英雄人物</title>
+</head>
+<body>
+<h3>《{{book.btitle}}》</h3>
+英雄人物如下： <br> <br>
+<ur>
+    {% for hero in heros%}
+    <li>{{hero.hname}}</li>
+    {% empty %}
+        <li>抱歉，该书没有找到任何英雄人物</li>
+    {% endfor %}
+</ur>
+
+</body>
+</html>

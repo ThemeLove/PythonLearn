@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>show_books</title>
+</head>
+<body>
+    所有书籍如下：<br>
+    <ur>
+        {% for book in books %}
+            <li><a href="book/{{book.id}}/detail">{{book.btitle}}</a></li>
+        {% endfor %}
+    </ur>
+</body>
+</html>
