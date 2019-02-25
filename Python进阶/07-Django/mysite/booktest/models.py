@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 
 # Create your models here.
@@ -8,7 +9,7 @@ class BookInfo(models.Model):
     # CharField说明是一个字符串，max_length指定字符串的最大长度
     btitle = models.CharField(max_length=20)
     # 出版日期， DateField说明是一个日期类型
-    bpub_date = models.DateField()
+    bpub_date = models.DateField(default=datetime(1990,1,1))
     # 阅读量
     bread = models.IntegerField(default=0)
     # 评论量
@@ -24,10 +25,10 @@ class HeroInfo(models.Model):
     '''图书英雄类'''
     # 英雄名称
     hname = models.CharField(max_length=20)
-    # 英雄性别，default=False代表男性
-    hgender = models.BooleanField(default=False)
+    # 英雄性别，default=True代表男性
+    hgender = models.BooleanField(default=True)
     # 评论
-    hcomment = models.CharField(max_length=128)
+    hcomment = models.CharField(max_length=128, null=True, blank=False)
     # 删除标记
     isDelete = models.BooleanField(default=False)
     # 关系属性外键
