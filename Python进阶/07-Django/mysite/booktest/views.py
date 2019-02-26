@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader, RequestContext
 from .models import BookInfo
+from datetime import date
+import logging
 
 # Create your views here.
 
@@ -12,12 +14,14 @@ from .models import BookInfo
 def show_books(request):
     '''显示所有书籍的名字'''
     books = BookInfo.objects.all()
+    logging.info("show_books")
     return render(request, "booktest/show_books.html", {"books": books})
 
 
 def book_detail(request, bookid):
     book = BookInfo.objects.get(id=bookid)
     heros = book.heroinfo_set.all()
+    logging.info("book_detail:bookid=" + bookid)
     return render(request, "booktest/book_detail.html", {"book": book, "heros": heros})
 
 
@@ -26,12 +30,14 @@ def add_book(request):
     newbook = BookInfo()
     newbook.btitle = "流星蝴蝶剑"
     newbook.save()
+    logging.info("add_book")
     return redirect('/books')
 
 
 def delete_book(request, bookid):
     book = BookInfo.objects.get(id=bookid)
     book.delete()
+    logging.info("delete_book:bookid="+bookid)
     # book.save()
     return redirect('/books')
 
