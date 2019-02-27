@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ajax_login</title>
+    <script src="/static/js/jquery-1.12.4.min.js"></script>
+    <style>
+        #errormsg{
+            display: none;
+            color: red;
+            border: 1px solid #000;
+            text-align: center;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function(){
+            $("#loginbtn").click(function(){
+                let username = $("#username").val();
+                let passowrd = $("#password").val();
+                $.ajax({
+                    url: "/ajax_check_login",
+                    type:"post",
+                    dataType:'json',
+                    data:{"username":username,"password":passowrd},
+                    success:function (data) {
+                        console.log("type of data="+ typeof data);
+                        if(data.status==1){ // 请求成功
+                            location.href = "/index"
+                        }else if(data.status==0){ // 请求失败
+                            $("#errormsg").html(data.msg).show()
+                        }
+                    }
+                })
+            })
+        })
+
+    </script>
+</head>
+<body>
+用户名：<input type="text" id="username" name="username"> <br>
+密码：<input type="text" id="password" name="password"> <br>
+<input type="button" id="loginbtn" value="登录"> <br>
+<span id="errormsg"></span>
+</body>
+</html>

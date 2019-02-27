@@ -1,11 +1,54 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest, QueryDict, JsonResponse
 from django.template import loader, RequestContext
 from .models import BookInfo
 from datetime import date
 import logging
 
+
 # Create your views here.
+def ajax_test(request):
+    return render(request, 'booktest/ajax_test.html')
+
+
+def ajax_hander(request):
+    return JsonResponse({"status": 1, "msg": "提示信息"})
+
+
+def login(request):
+    return render(request, "booktest/login.html", {})
+
+
+def check_login(request):
+    if request.method == "POST":
+        queryDict = request.POST
+    else:
+        queryDict = request.GET
+    username = queryDict.get('username')
+    password = queryDict.get('password')
+
+    if username == 'admin' and password == 'themelove':  # 登录成功
+        return redirect('/index')
+    else:  # 登录失败
+        return redirect('/login')
+
+
+def ajax_login(request):
+    return render(request, 'booktest/ajax_login.html', {})
+
+
+def ajax_check_login(request):
+    if request.method == "POST":
+        queryDict = request.POST
+    else:
+        queryDict = request.GET
+    username = queryDict.get('username')
+    password = queryDict.get('password')
+
+    if username == 'admin' and password == 'themelove':  # 登录成功
+        return JsonResponse({"status":1,"msg":"登录成功"})
+    else:  # 登录失败
+        return JsonResponse({"status":0, "msg":"用户名或密码错误"})
 
 
 # 1.定义视图函数，HttpRequest

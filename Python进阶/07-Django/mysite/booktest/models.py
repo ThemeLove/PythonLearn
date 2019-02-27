@@ -3,6 +3,28 @@ from datetime import datetime
 
 
 # Create your models here.
+class BookInfoManager(models.Manager):
+    '''图书类管理器类'''
+    # 重写管理器原有的方法
+    def all(self):
+        books =super().all().filter(isDelete=False)
+        return books
+
+    # 添加新方法create_book
+    # 注意Manager自带有create方法，这里是添加新方法，不是重写
+    def create_book(self, btitle, bpub_date):
+        # self.model是Manager里提供的方法可以获取到和Manager关联的模型类
+        # BookInfo = self.model
+        # book = BookInfo()
+
+        # self.model()直接表示创建一个对象关联模型类对象
+        book = self.model()
+        book.btitle = btitle
+        book.bpub_date = bpub_date
+        book.save()
+        return book
+
+
 # 图书类
 class BookInfo(models.Model):
     '''图书模型类'''
@@ -16,9 +38,16 @@ class BookInfo(models.Model):
     bcomment = models.IntegerField(default=0)
     # 删除标记
     isDelete = models.BooleanField(default=False)
+    # 创建自定义管理器对象替换原生的objects
+    objects = BookInfoManager()
 
     def __str__(self):
         return self.btitle
+
+    # 指定模型类对应的表名，这样创建的表名就不会跟随项目名
+    # class Meta:
+    #     db_table = 'bookinfo'
+
 
 
 class HeroInfo(models.Model):
