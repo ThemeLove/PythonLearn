@@ -34,7 +34,19 @@ def check_login(request):
 
 
 def ajax_login(request):
-    return render(request, 'booktest/ajax_login.html', {})
+    if "username" in request.COOKIES:
+        username = request.COOKIES.get("username")
+    else:
+        username = ""
+    if "password" in request.COOKIES:
+        password = request.COOKIES.get("password")
+    else:
+        password = ""
+    if "remember" in request.COOKIES:
+        remember = request.COOKIES.get("remember")
+    else:
+        remember = "false"
+    return render(request, 'booktest/ajax_login.html', {"username": username, "password": password, "remember": remember})
 
 
 def ajax_check_login(request):
@@ -44,11 +56,25 @@ def ajax_check_login(request):
         queryDict = request.GET
     username = queryDict.get('username')
     password = queryDict.get('password')
+    remember = queryDict.get('remember')
+
+    print("type of remember="+ str(type(remember)))  # str类型
+    print("remember=" + remember)
 
     if username == 'admin' and password == 'themelove':  # 登录成功
-        return JsonResponse({"status":1,"msg":"登录成功"})
+        response = JsonResponse({"status": 1, "msg": "登录成功"})
+        if remember == "true": # 用户选择记住用户名和密码
+            response.set_cookie("username", username, max_age=7*24*3600)
+            response.set_cookie("password", password, max_age=7*24*3600)
+            response.set_cookie("remember", remember, max_age=7*24*3600)
+        else: # 用户没有勾选用户名和密码，要清除cookie
+            response.set_cookie("username", "", max_age=0)
+            response.set_cookie("password", "", max_age=0)
+            response.set_cookie("remember", "false", max_age=0)
+
+        return response
     else:  # 登录失败
-        return JsonResponse({"status":0, "msg":"用户名或密码错误"})
+        return JsonResponse({"status": 0, "msg": "用户名或密码错误"})
 
 
 # 1.定义视图函数，HttpRequest

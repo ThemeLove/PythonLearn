@@ -18,11 +18,16 @@
             $("#loginbtn").click(function(){
                 let username = $("#username").val();
                 let passowrd = $("#password").val();
+                // let remember = $("#remember").prop("checked");
+                // 判断checkbox是否被选中，返回为boolean类型值
+                let remember = $("#remember").is(':checked')
+                console.log("type of remember=" + typeof remember)
+                console.log("remember="+remember);
                 $.ajax({
                     url: "/ajax_check_login",
                     type:"post",
                     dataType:'json',
-                    data:{"username":username,"password":passowrd},
+                    data:{"username":username,"password":passowrd,"remember":remember},
                     success:function (data) {
                         console.log("type of data="+ typeof data);
                         if(data.status==1){ // 请求成功
@@ -38,8 +43,15 @@
     </script>
 </head>
 <body>
-用户名：<input type="text" id="username" name="username"> <br>
-密码：<input type="text" id="password" name="password"> <br>
+用户名：<input type="text" id="username"  value="{{username}}"> <br>
+密码：<input type="text" id="password"  value="{{password}}"> <br>
+记住：
+{%if remember == "true"%}
+<input type="checkbox"  id="remember" checked="checked" /> <br>
+{%else%}
+<input type="checkbox"  id="remember"/> <br>
+{%endif%}
+
 <input type="button" id="loginbtn" value="登录"> <br>
 <span id="errormsg"></span>
 </body>
