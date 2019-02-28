@@ -26,7 +26,7 @@ SECRET_KEY = '6-mordox$o&9ulm407su(^3zpnqs#bw(*^jm4nq8oq0n6qp*t8'
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['0.0.0.0', '*']
 
 
 # Application definition

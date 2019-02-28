@@ -7,6 +7,40 @@ import logging
 
 
 # Create your views here.
+def set_cookie(request):
+    '''设置cookie'''
+    response = JsonResponse({"cookietest":"cookietest"})
+    response.set_cookie("cookietest", "cookietest", max_age=3*24*3600)
+    return response
+
+
+def get_all_cookie(request):
+    '''获取携带的所有cookie'''
+    cookie_dict = dict()
+    print("type of request.COOKIES="+ str(type(request.COOKIES)))
+    for cookie in request.COOKIES:
+        cookie_dict[cookie] = request.COOKIES.get(cookie)
+    return JsonResponse({"all_cookie": cookie_dict})
+
+
+def set_session(request):
+    '''设置session'''
+    request.session['sessiontest'] = "sessiontest"
+    return JsonResponse({'sessiontest':"sessiontest"})
+
+
+def get_all_session(request):
+    print("type of request="+ str(type(request)))
+    # request = HttpRequest()
+    # session_dict = dict()
+    # print("type of session="+ str(type(request.session)))
+    # request.
+    # for session in request.session:
+    #     session_dict[session] = request.session[session]
+    sessiontest = request.session['sessiontest']
+    return JsonResponse({'all_session': sessiontest})
+
+
 def ajax_test(request):
     return render(request, 'booktest/ajax_test.html')
 
@@ -34,6 +68,11 @@ def check_login(request):
 
 
 def ajax_login(request):
+    # 1.首先根据session判断该用户是否已经登录
+    if request.session.get('islogin', "false") == "true":
+        return redirect("/index")
+
+    # 2.如果需要重写登录，则根据cookie来判断是否要记住用户名密码来复显用户名密码
     if "username" in request.COOKIES:
         username = request.COOKIES.get("username")
     else:
@@ -63,11 +102,13 @@ def ajax_check_login(request):
 
     if username == 'admin' and password == 'themelove':  # 登录成功
         response = JsonResponse({"status": 1, "msg": "登录成功"})
-        if remember == "true": # 用户选择记住用户名和密码
+        request.session['islogin'] = 'true'
+        request.session.set_expiry(60)  # 设置过期时间为60秒
+        if remember == "true":  # 用户选择记住用户名和密码
             response.set_cookie("username", username, max_age=7*24*3600)
             response.set_cookie("password", password, max_age=7*24*3600)
             response.set_cookie("remember", remember, max_age=7*24*3600)
-        else: # 用户没有勾选用户名和密码，要清除cookie
+        else:  # 用户没有勾选用户名和密码，要清除cookie
             response.set_cookie("username", "", max_age=0)
             response.set_cookie("password", "", max_age=0)
             response.set_cookie("remember", "false", max_age=0)
