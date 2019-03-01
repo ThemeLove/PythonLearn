@@ -23,5 +23,16 @@ urlpatterns = [
     url(r'^get_cookie$', views.get_all_cookie),
 
     url(r'^set_session$', views.set_session),
-    url(r'^get_session$', views.get_all_session)
+    url(r'^get_session$', views.get_all_session),
+
+    # ------------------模板继承--部分--------------
+    url(r'^child$', views.inherit_child),
+    # ------------------模板注释--部分--------------
+    url(r'^comment$', views.comment_test),
+    # ------------------模板转义--部分--------------
+    url(r'^escape$', views.escape_test),
+    # ------------------图片验证码--部分--------------
+    url(r'^verifycode', views.verify_code)
+
+
 ]

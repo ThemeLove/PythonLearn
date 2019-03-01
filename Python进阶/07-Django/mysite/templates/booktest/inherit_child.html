@@ -1,0 +1,32 @@
+{#注意模板继承的代码必须放在第一行#}
+{% extends "booktest/inherit_base.html"  %}
+{#--加载自定义的过滤器#}
+{%load my_filter %}
+
+{% block section %}
+{#{block.super}}表示调用父类的模板，即加载父类相应模块的内容#}
+    {{block.super}}
+    <h3 class="child">我是子模板中的section</h3>
+{% endblock section%}
+
+{% block content %}
+    {{block.super}}
+    <h3 class="child">下面是子模板中的content</h3>
+    <ul>
+        {# 这里的mod是自定义的过滤器，传递参数时要用：隔开，过滤器前的变量默认是第一个参数，一个过滤器最多定义2个参数#}
+        {# forloop.counter表示是第几次循环； date为django自带的过滤器 #}
+        {# empty表示循环为空时显示的内容 #}
+        {% for book in books%}
+
+            {% if book.id|mod:3 %}
+                <li class="child">序号：{{forloop.counter}}--书名：《{{book.btitle}}》--id:({{book.id}})--发版时间：{{ book.bpub_date|date:"Y年m月d日"}}</li>
+            {% else%}
+                <li class="child">序号：{{forloop.counter}}--书名：《{{book.btitle}}》--id:({{book.id}})</li>
+            {% endif %}
+
+        {% empty%}
+            <li>抱歉，没有任何图书</li>
+        {% endfor%}
+
+    </ul>
+{% endblock content %}

@@ -3,11 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>login</title>
+    <script src="/static/js/jquery-1.12.4.min.js"></script>
+    <script>
+    $(document).ready(function () {
+        $("#vefifycodebtn").click(function () {
+            console.log("verifycode-click");
+           $("#verifycodebtn").attr("src",$("#verifycodebtn").attr("src")+1)
+        })
+    })
+
+    </script>
 </head>
 <body>
 <form action="/check_login" method="post">
 用户名：<input type="text" name="username"> <br>
 密码:<input type="text" name="password"> <br>
+图片验证码：<img src="/verifycode/?1" name="verifycode" alt=""/> <input type="button" id="vefifycodebtn" value="看不清，换一张" /> <br>
     <input type="submit" value="登录">
 </form>
 </body>

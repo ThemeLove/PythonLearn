@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>inherit_base</title>
+    <style>
+        .base{
+            background-color: coral;
+        }
+
+        .child{
+            background-color: #007aff;
+        }
+
+        ul,li{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+    </style>
+</head>
+<body>
+<h1 class="base">说明：父模板和子模板中的内容用2中颜色区分</h1>
+<h1 class="base">我是父模板头部</h1>
+
+{% block section %}
+    <h3 class="base" >我是父模板中的section</h3>
+{% endblock section %}
+
+{% block content %}
+    <h3 class="base">我是父模板中的content</h3>
+{% endblock content%}
+<h1 class="base">我是父模板尾部</h1>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模板注释-comment</title>
+</head>
+<body>
+
+<h3>html原生注释用&lt!--  注释的内容  --&gt，网页原代码中也能看见</h3>
+<!--嘿嘿，我就是原生html注释内容，你能看到我，哈哈-->
+
+{%autoescape off%}
+<h3>django模板里单行注释用{#  注释的内容  #}，网页原代码中看不见</h3>
+<h3>django模板中的多行注释用{%comment%}{%endcomment%}标签</h3>
+{%endautoescape%}
+</body>
+</html>
