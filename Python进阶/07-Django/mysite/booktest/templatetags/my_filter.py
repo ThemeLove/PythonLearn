@@ -2,7 +2,7 @@ from django.template import Library
 
 register = Library()
 
-'''自定义空滤器
+'''自定义过滤器
 1.在应用目录下建立templatetags包目录
 2.新建模块，导入from django.template import Library模块 
 3.实例化一个register = Library()对象

@@ -19,9 +19,9 @@
         {% for book in books%}
 
             {% if book.id|mod:3 %}
-                <li class="child">序号：{{forloop.counter}}--书名：《{{book.btitle}}》--id:({{book.id}})--发版时间：{{ book.bpub_date|date:"Y年m月d日"}}</li>
+                <li class="child">序号(forloop.counter)={{forloop.counter}}--书名(book.btitle)=《{{book.btitle}}》--书名长度(length)={{book.btitle|length}}--id(book.id)={{book.id}}--发版时间(date)={{ book.bpub_date|date:"Y年m月d日"}}</li>
             {% else%}
-                <li class="child">序号：{{forloop.counter}}--书名：《{{book.btitle}}》--id:({{book.id}})</li>
+                <li class="child">序号(forloop.counter)={{forloop.counter}}--书名(book.btitle)=《{{book.btitle}}》--id(book.id)={{book.id}}</li>
             {% endif %}
 
         {% empty%}
