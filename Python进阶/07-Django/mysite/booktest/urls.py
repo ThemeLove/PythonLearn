@@ -1,11 +1,12 @@
 from django.conf.urls import url
 from . import views
+app_name = 'booktest'
 # 通过
 urlpatterns = [
     # 通过url函数设置url路由配置项
     # r'^index$'严格匹配开头和结尾
     url(r'^$', views.show_books),
-    url(r'^index[/]$', views.show_books),
+    url(r'^index[/]$', views.show_books, name="index"),
     url(r'^books[/]$', views.show_books),
     url(r'^book/(\d+)/detail[/]$', views.book_detail),
     url(r'^addbook[/]$', views.add_book),
@@ -32,7 +33,8 @@ urlpatterns = [
     # ------------------模板转义--部分--------------
     url(r'^escape$', views.escape_test),
     # ------------------图片验证码--部分--------------
-    url(r'^verifycode', views.verify_code)
-
+    url(r'^verifycode', views.verify_code),
+    # ------------------反向解析--部分--------------
+    url(r'^reverse$', views.reverse_test)
 
 ]

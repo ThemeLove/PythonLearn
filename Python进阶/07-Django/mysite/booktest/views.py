@@ -229,3 +229,9 @@ def verify_code(request):
     im.save(buf, 'png')
     #将内存中的图片数据返回给客户端，MIME类型为图片png
     return HttpResponse(buf.getvalue(), 'image/png')
+
+# ---------------------下面是--转义--测试部分------------------'''
+
+
+def reverse_test(request):
+    return render(request, "booktest/reverse_test.html", {})
