@@ -235,3 +235,9 @@ def verify_code(request):
 
 def reverse_test(request):
     return render(request, "booktest/reverse_test.html", {})
+
+# ---------------------下面是--静态文件--测试部分------------------'''
+
+
+def static_test(request):
+    return render(request, 'booktest/static_test.html', {})
