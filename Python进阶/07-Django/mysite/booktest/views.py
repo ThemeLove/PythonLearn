@@ -7,6 +7,18 @@ from django.utils.six import BytesIO
 import logging
 
 
+def login_required(view_func):
+    '''登录判断装饰器'''
+    def wrapper(request, *view_args, **view_kwargs):
+        if request.session.has_key('islogin'):
+            # 用户已登录，调用对应的视图
+            return view_func(request, *view_args, **view_kwargs)
+        else:
+            # 用户未登录，跳转到登录页
+            return redirect('/ajax_login')
+    return wrapper
+
+
 # Create your views here.
 def set_cookie(request):
     '''设置cookie'''
@@ -122,6 +134,7 @@ def ajax_check_login(request):
 # 1.定义视图函数，HttpRequest
 # 2.进行url配置，建立url地址和视图的对应关系
 # http://127.0.0.1:8000/books对应的函数为show_books
+@login_required
 def show_books(request):
     '''显示所有书籍的名字'''
     books = BookInfo.objects.all()
