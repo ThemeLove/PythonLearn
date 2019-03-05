@@ -35,6 +35,9 @@ urlpatterns = [
     # ------------------图片验证码--部分--------------
     url(r'^verifycode', views.verify_code),
     # ------------------反向解析--部分--------------
-    url(r'^reverse$', views.reverse_test)
+    url(r'^reverse$', views.reverse_test),
+    # ------------------静态文件--部分--------------
+    url(r'^static$', views.static_test),
+
 
 ]
