@@ -38,6 +38,12 @@ urlpatterns = [
     url(r'^reverse$', views.reverse_test),
     # ------------------静态文件--部分--------------
     url(r'^static$', views.static_test),
-
-
+    # ------------------上传文件--部分--------------
+    url(r'^upload$', views.show_upload),
+    url(r'^upload_handle$', views.upload_handle),
+    url(r'^pics$', views.show_pics),
+    # ------------------分页--部分--------------
+    url(r'^provinces', views.show_provinces),
+    url(r'^areas$', views.show_areas),
+    url(r'^get_areas', views.get_areas)
 ]

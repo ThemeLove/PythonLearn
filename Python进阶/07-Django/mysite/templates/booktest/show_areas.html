@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>省市县联动</title>
+    <script src="/static/js/jquery-1.12.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // 首次页面加载完成请求所有省份
+            $.ajax({
+                url:"/get_areas",
+                type:"get",
+                dataType:"json",
+                success:function (data) {
+                    console.log("type of data="+ typeof data);
+                    console.log("data="+data);
+                    let option_str="";
+                    $.each(data.data,function (index, item) {
+                        console.log("index="+index);
+                        console.log("item="+item);
+                        option_str+= "<option value="+item[0]+">"+item[1]+"</option>";
+
+                    });
+                     $(".provinces").eq(0).append(option_str);
+                     $(".provinces").eq(0).selectpicker('refresh');
+                }
+            });
+            let province="";
+            let city="";
+            let district="";
+            // 当用户选择具体省份时触发，向后端请求该省份下对应的所有市区
+            $(".provinces").eq(0).change(function () {
+               // 当省份option发生了变化的时候，初始化市区和县区select
+                $(".city").eq(0).html("<option>请选择市区</option>");
+                $(".district").eq(0).html("<option>请选择县区</option>");
+
+               // 获取当前选择option的value值
+                let area_id = $(this).val();
+                province = $(this).find("option:selected").text();
+                $(".current").eq(0).html("当前选择："+province);
+
+                $.ajax({
+                    url:"/get_areas",
+                    type:"get",
+                    dataType:"json",
+                    data:{"areaid":area_id},
+                    success:function (data) {
+                        console.log("type of data="+ typeof data);
+                        console.log("data="+data);
+                        let option_str="";
+                        $.each(data.data, function (index, item) {
+                             option_str+= "<option value="+item[0]+">"+item[1]+"</option>";
+                        });
+                        $(".city").eq(0).append(option_str);
+                        $(".city").eq(0).selectpicker('refresh');
+                    }
+                })
+
+            });
+            // 当用户选择具体市区时，向后端请求该市区下对应的所有县区
+            $(".city").eq(0).change(function () {
+                // 当市区option发生了变化的时候，初始化县区select
+                $(".district").eq(0).html("<option>请选择县区</option>");
+
+                let area_id = $(this).val();
+                city = $(this).find("option:selected").text();
+                $(".current").eq(0).html("当前选择："+province+"--"+city);
+                $.ajax({
+                    url:"/get_areas",
+                    type:"get",
+                    dataType:"json",
+                    data:{"areaid":area_id},
+                    success:function (data) {
+                        console.log("type of data="+ typeof data);
+                        console.log("data="+data);
+                        let option_str="";
+                        $.each(data.data, function (index, item) {
+                             option_str+= "<option value="+item[0]+">"+item[1]+"</option>";
+                        });
+                        $(".district").eq(0).append(option_str);
+                        $(".district").eq(0).selectpicker('refresh');
+                    }
+                })
+            });
+            // 当用户选择具体县区时触发
+            $(".district").eq(0).change(function () {
+                district = $(this).find("option:selected").text();
+                $(".current").eq(0).html("当前选择："+province+"--"+city+"--"+district);
+            })
+        })
+    </script>
+</head>
+<body>
+<h2>省市县联动</h2>
+<h3 class="current">当前选择：</h3>
+<select class="provinces">
+    <option>请选择省份</option>
+</select>
+<select class="city">
+    <option>请选择市区</option>
+</select>
+<select class="district">
+    <option>请选择县区</option>
+</select>
+</body>
+</html>

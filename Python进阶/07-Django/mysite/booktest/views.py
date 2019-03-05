@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest, QueryDict, JsonResponse
 from django.template import loader, RequestContext
-from .models import BookInfo
+from .models import BookInfo, UploadPic
 from PIL import Image,ImageDraw,ImageFont
 from django.utils.six import BytesIO
 import logging
+from django.conf import settings
+from . import models
+from django.core.paginator import Paginator
 
 
 def login_required(view_func):
@@ -254,3 +257,77 @@ def reverse_test(request):
 
 def static_test(request):
     return render(request, 'booktest/static_test.html', {})
+
+
+# ---------------------下面是--上传图片--测试部分------------------'''
+def show_upload(request):
+    return render(request, 'booktest/show_upload.html', {})
+
+
+def upload_handle(request):
+    # 获取上传的图片
+    file = request.FILES.get("pic")
+
+    if not file:
+        return HttpResponse("<h2>请先选择图片</h2>")
+
+    print("type of file="+str(type(file)))
+    # 构造存储路径
+    fpath = '%s/booktest/%s' % (settings.MEDIA_ROOT, file.name)
+    print("fpath="+fpath)
+    # 读写保存
+    with open(fpath,'wb') as pic:
+        for c in file.chunks():
+            pic.write(c)
+    # 上传成功将文件路径保存进数据库
+    UploadPic.objects.create(path="booktest/%s"%file.name)
+
+    return redirect("/pics")
+
+
+def show_pics(request):
+    pics = UploadPic.objects.all()
+    print("pics=" + str(pics))
+    return render(request, 'booktest/show_pics.html', {"pics": pics})
+
+
+# ---------------------下面是--分页--测试部分------------------'''
+def show_provinces(request):
+    # 1.查询出所有省级地区的信息
+    areas = models.AreaInfo.objects.filter(aparent_id__isnull=True)
+    # 2.获取index参数
+    index = 1
+    if request.method == "GET":
+        index = request.GET.get("index", 1)
+    elif request.method == "POST":
+        index = request.POST.get("index", 1)
+
+    paginator = Paginator(areas, 10)
+    page = paginator.page(index)
+
+    # 2.渲染模板
+    return render(request, 'booktest/show_provinces.html', {"page": page})
+
+
+def show_areas(request):
+    return render(request, 'booktest/show_areas.html', {})
+
+
+def get_areas(request):
+    if request.method == "GET":
+        area_id = request.GET.get("areaid")
+    elif request.method == "POST":
+        area_id = request.POST.get("areaid")
+
+    if area_id : # 如果有值，说明用户传了，则查找对应id的下级地区
+        onearea = models.AreaInfo.objects.get(id=area_id)
+        areas = onearea.areainfo_set.all()
+    else: # 如果没值，则获取所有省级地区返回
+        areas = models.AreaInfo.objects.filter(aparent_id__isnull=True)
+
+    response_list = []
+    if areas.count()>0:
+        for area in areas:
+            response_list.append((area.id, area.atitle))
+
+    return JsonResponse({"data": response_list})

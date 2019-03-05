@@ -107,3 +107,7 @@ class AreaInfo(models.Model):
     atitle = models.CharField(max_length=20)
     # 建立自关联
     aparent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
+
+
+class UploadPic(models.Model):
+    path = models.ImageField(upload_to='booktest/')

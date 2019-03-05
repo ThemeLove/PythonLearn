@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>上传图片</title>
+    <script src="/static/js/jquery-1.12.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#upload").click(function () {
+                let fileInput=$("#pic").get(0).files[0];
+                if (!fileInput){
+                     alert("请选择上传图片！")
+                    return false;
+                }
+
+            })
+        })
+
+    </script>
+</head>
+<body>
+<form action="/upload_handle" method="post" enctype="multipart/form-data">
+    上传图片：<input type="file" name="pic" id="pic"> <br>
+    <input type="submit" value="上传" id="upload">
+</form>
+</body>
+</html>

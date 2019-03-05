@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>所有省份</title>
+    <style>
+        ul,li,a{
+            list-style: none;
+            margin-top: 5px;
+            padding: 5px;
+        }
+        .provinces li{
+            width: 200px;
+        }
+        .index li{
+            float: left;
+        }
+        .index li.current{
+            color: green;
+        }
+    </style>
+
+</head>
+<body>
+<h2>所有省份：</h2>
+<ul class="provinces">
+    {% for area in page %}
+        <li><a href="">{{area.atitle}}</a></li>
+    {%empty%}
+        <li>抱歉，没有任何省份！</li>
+    {%endfor%}
+</ul>
+<ul class="index">
+     {% if page.has_previous%}
+        <li><a href="/provinces?index={{page.previous_page_number}}">&lt;上一页</a></li>
+    {%endif%}
+
+    {% for index in page.paginator.page_range%}
+        {%if page.number == index %}
+            <li class="current">{{index}}</li>
+        {%else%}
+            <li><a href="/provinces?index={{index}}">{{index}}</a></li>
+        {%endif%}
+    {%empty%}
+    {% endfor%}
+
+    {% if page.has_next %}
+        <li><a href="/provinces?index={{page.next_page_number}}">&gt;下一页</a></li>
+    {%endif%}
+</ul>
+</body>
+</html>

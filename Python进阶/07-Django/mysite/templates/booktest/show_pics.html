@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>展示图片</title>
+    <style>
+        ul,li,img{
+            list-style: none;
+            width: 200px;
+            height: 200px;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+{%load static from staticfiles%}
+
+已上传图图片如下： <br>
+<ul>
+    {% for pic in pics%}
+    第{{forloop.counter}}张 <br>
+    path:{{pic.path}} <br>
+    <li><img src="{%static 'media/' %}{{pic.path}}"alt=""></li><br>
+    {%empty%}
+    <li>抱歉还没有任何图片</li>
+    {%endfor%}
+</ul>
+</body>
+</html>

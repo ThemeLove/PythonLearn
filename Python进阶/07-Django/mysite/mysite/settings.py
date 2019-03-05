@@ -141,3 +141,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 # 设置静态文件保存目录
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+
+# 配置上传文件路径,这里配置不能是一个列表
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
+
+
