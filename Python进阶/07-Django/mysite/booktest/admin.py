@@ -16,6 +16,7 @@ class HeroInfoAdmin(admin.ModelAdmin):
 
 
 class AreaStackedInline(admin.StackedInline):
+    '''关联子对象管理类：以块的形式嵌入'''
     # 关联子对象
     model = models.AreaInfo
     # 额外编辑子对象个数
@@ -23,6 +24,7 @@ class AreaStackedInline(admin.StackedInline):
 
 
 class AreaTabularInline(admin.TabularInline):
+    '''关联子对象管理类：以表格的形式嵌入'''
     # 关联子对象
     model = models.AreaInfo
     # 额外编辑子对象个数
@@ -58,12 +60,11 @@ class AreaInfoAdmin(admin.ModelAdmin):
 '''----------------------AreaInfo管理类相关--start----------------------'''
 
 # Register your models here.
-
+admin.site.register(models.AreaInfo, AreaInfoAdmin)
 admin.site.register(models.BookInfo, BookInfoAdmin)
 admin.site.register(models.HeroInfo, HeroInfoAdmin)
 admin.site.register(models.NewsType)
 admin.site.register(models.NewsInfo)
 admin.site.register(models.EmployeeBasicInfo)
 admin.site.register(models.EmployeeDetailInfo)
-admin.site.register(models.AreaInfo, AreaInfoAdmin)
 admin.site.register(models.UploadPic)

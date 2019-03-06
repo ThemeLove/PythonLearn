@@ -103,7 +103,7 @@ class EmployeeDetailInfo(models.Model):
 
 class AreaInfo(models.Model):
     '''地区模型类'''
-    # 地区名称,第一个参数“地区名称”代表在管理后台显示的列标题
+    # 地区名称,第一个参数verbose_name“地区名称”代表在管理后台显示的列标题
     atitle = models.CharField("地区名称", max_length=20)
     # 建立自关联
     aparent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
