@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'apps.cart',
     'apps.goods',
     'apps.order',
-    'apps.user'
+    'apps.user',
+    'tinymce'
 ]
 
 MIDDLEWARE = [
@@ -107,7 +108,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+# django认证系统使用的模型类
+AUTH_USER_MODEL = 'apps.user.User'
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -127,3 +129,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
+
+# 富文本编辑器
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': 'advanced',
+    'width': 600,
+    'height': 400
+}
