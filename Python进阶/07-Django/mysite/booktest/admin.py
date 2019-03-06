@@ -34,7 +34,7 @@ class AreaTabularInline(admin.TabularInline):
 class AreaInfoAdmin(admin.ModelAdmin):
     # ----------下面是列表页的配置选项----------
     # 配置每页显示的个数
-    list_per_page = 15
+    list_per_page = 5
     # 顶部编辑选项
     actions_on_top = True
     # 底部编辑选项
