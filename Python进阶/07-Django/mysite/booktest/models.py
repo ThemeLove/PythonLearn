@@ -103,10 +103,24 @@ class EmployeeDetailInfo(models.Model):
 
 class AreaInfo(models.Model):
     '''地区模型类'''
-    # 地区名称
-    atitle = models.CharField(max_length=20)
+    # 地区名称,第一个参数“地区名称”代表在管理后台显示的列标题
+    atitle = models.CharField("地区名称", max_length=20)
     # 建立自关联
     aparent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
+
+    # 自定义方法
+    def parent(self):
+        if self.aparent is None:
+            return ""
+        return self.aparent.atitle
+    # 配置自定义方法在管理后台显示的列标题
+    parent.short_description = "父级地区名称"
+    # 配置自定义方法按照那个字段排序
+    parent.admin_order_field = "atitle"
+
+    # 重写__str__方法，管理后台为该类对象时显示的方式
+    def __str__(self):
+        return self.atitle
 
 
 class UploadPic(models.Model):
