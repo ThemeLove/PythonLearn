@@ -1,12 +1,10 @@
 from django.urls import path,re_path
 from . import views
+
 app_name = "user"
 # 通过
 urlpatterns = [
-    # 通过url函数设置url路由配置项
-    # r'^index$'严格匹配开头和结尾
-    # path('')
-    path('register', views.register, name="register"),
-    path('register_handle', views.register_handle, name='register_handle'),
-
+    path('register', views.RegisterView.as_view(), name="register"),  # 注册用户
+    path('active/<str:active_str>', views.ActiveView.as_view(), name="active"),  # 激活用户
+    path('login', views.LoginView.as_view(), name='login')  # 用户登陆
 ]
