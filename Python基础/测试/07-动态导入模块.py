@@ -8,7 +8,7 @@ def main():
     # 特别注意，动态导入一个模块前要确保在环境变量中能找到该模块。
     # 需要将需要导入的模块路径动态加入到系统环境变量中，
     # 这种导入是临时导入，并不会真的添加到系统环境变量中，程序结束就会还原
-    sys.path.append("../../common")
+    sys.path.append("../../base")
     print("sys path=" + str(sys.path))
     # 1. __import__的使用，python解释器内部使用，不建议用
     ship1 = __import__("ship")

@@ -11,10 +11,12 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+print("basedir="+BASE_DIR)
+sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -25,8 +27,9 @@ SECRET_KEY = 'mo6^^&8w%a=&2hkhe@955*!=(b3tx@k!3n0fardq8u&zvl@z^t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', '*']
 
+APPEND_SLASH = False
 
 # Application definition
 
@@ -37,11 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.cart',
-    'apps.goods',
-    'apps.order',
-    'apps.user',
-    'tinymce'
+    'cart',
+    'goods',
+    'order',
+    'user',
+    'tinymce',
+    'base'
 ]
 
 MIDDLEWARE = [
@@ -109,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # django认证系统使用的模型类
-AUTH_USER_MODEL = 'apps.user.User'
+AUTH_USER_MODEL = 'user.User'
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 

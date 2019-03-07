@@ -821,7 +821,7 @@ class ZipExtFile(io.BufferedIOBase):
         """
 
         if limit < 0:
-            # Shortcut common case - newline found in buffer.
+            # Shortcut base case - newline found in buffer.
             i = self._readbuffer.find(b'\n', self._offset) + 1
             if i > 0:
                 line = self._readbuffer[self._offset: i]
