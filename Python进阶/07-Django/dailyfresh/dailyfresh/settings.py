@@ -114,6 +114,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # django认证系统使用的模型类
 AUTH_USER_MODEL = 'user.User'
+# user = authenticate(username=username, password=password):不会检测用户的活跃状态
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.AllowAllUsersModelBackend']
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -141,3 +143,14 @@ TINYMCE_DEFAULT_CONFIG = {
     'width': 600,
     'height': 400
 }
+
+# 发送邮件配置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 25
+#发送邮件的邮箱
+EMAIL_HOST_USER = 'lqsthemelove@163.com'
+#在邮箱中设置的客户端授权密码
+EMAIL_HOST_PASSWORD = '235xiang617ding'
+#收件人看到的发件人
+EMAIL_FROM = '天天生鲜<lqsthemelove@163.com>'

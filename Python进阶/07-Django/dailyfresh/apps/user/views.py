@@ -7,6 +7,8 @@ from django.conf import settings
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import SignatureExpired
 from django.http  import HttpResponse
+from django.contrib.auth  import authenticate, login
+from django.core.mail import send_mail
 
 
 # Create your views here.
@@ -48,8 +50,16 @@ class RegisterView(View):
         # 发送激活邮件，激活链接中包含加密的用户信息
         user_info = {"id": new_user.id, "username": new_user.username}
         serializer = Serializer(settings.SECRET_KEY, 3600)
-        encryption_str = str(serializer.dumps(user_info))
+        active_token = serializer.dumps(user_info).decode('utf8')
         # 发送邮件
+        subject = "天天生鲜激活邮件"
+        message = ""
+        html_message = "<h1>%s,欢迎您成为天天生鲜注册会员</h1>请点击下面链接激活您的账户</br><a href='http://10.200.202.16:8000/user/active/%s'>http://10.200.202.16:8000/user/active/%s</a>" % (username, active_token, active_token)
+        sender = settings.EMAIL_FROM
+        # 收件人列表
+        receiver = [email]
+
+        send_mail(subject, message, sender, receiver, html_message=html_message)
 
         # 返回应答，跳转到首页
         return redirect(reverse("goods:index"))
@@ -59,14 +69,17 @@ class ActiveView(View):
     '''激活用户类'''
     def get(self, request, active_str):
         serializer = Serializer(settings.SECRET_KEY, 3600)
+        user = None
         try:
-            user_info = serializer.loads(active_str)
-            user = User.objects.get(id=user_info["id"])
-            user.is_active =1
+            active_token = serializer.loads(active_str)
+            print("active_token="+active_token)
+            user = User.objects.get(id=active_token["id"])
+            user.is_active = 1
             user.save()
             # 激活成功，去登陆
             return redirect(reverse("user:login"))
         except SignatureExpired as ret:
+            print("激活链接已过期")
             return HttpResponse("激活链接已过期")
         except User.DoesNotExist as ret:
             return HttpResponse("非法用户")
@@ -74,10 +87,43 @@ class ActiveView(View):
 
 class LoginView(View):
     '''用户登陆'''
-    def get(self,request):
-        return render(request, "user/login.html", {})
+    def get(self, request):
+        if "username" in request.COOKIES:
+            username = request.COOKIES.get("username")
+            checked = "checked"
+        else:
+            username = ""
+            checked = ""
+        return render(request, "user/login.html", {"username": username, "checked": checked})
 
-    def post(self,request):
-        pass
+    def post(self, request):
+        username = request.POST.get("username")
+        password = request.POST.get("pwd")
+        remember = request.POST.get("remember")
+
+        if not all([username, password]):
+            return render(request, 'user/login.html', {"errormsg": "账号密码不完整"})
+
+        user = authenticate(username=username, password=password)
+        if user is not None:  # 认证成功
+            print("username=%s,password=%s, auth success" % (username, password))
+            if user.is_active:
+                print("username=%s,password=%s, is_active" % (username, password))
+                # 没有激活
+                login(request, user)
+                print("username=%s,password=%s, login" % (username, password))
+                response = redirect(reverse("goods:index"))
+                if remember == "on":
+                    response.set_cookie("username", username, max_age=7*24*3600)
+                else:
+                    response.delete_cookie("username")
+                return response
+            else:
+                # 没有激活
+                return render(request, "user/login.html", {"errormsg": "账号未激活"})
+        else:  # 认证失败
+            print("username=%s,password=%s, 账号密码错误" %(username, password))
+            return render(request, 'user/login.html', {"errormsg": "账号或密码错误"})
+
 
 
