@@ -7,8 +7,8 @@ from django.conf import settings
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import SignatureExpired
 from django.http  import HttpResponse
-from django.contrib.auth  import authenticate, login
-from django.core.mail import send_mail
+from django.contrib.auth import authenticate, login
+from celery_tasks import tasks
 
 
 # Create your views here.
@@ -51,16 +51,8 @@ class RegisterView(View):
         user_info = {"id": new_user.id, "username": new_user.username}
         serializer = Serializer(settings.SECRET_KEY, 3600)
         active_token = serializer.dumps(user_info).decode('utf8')
-        # 发送邮件
-        subject = "天天生鲜激活邮件"
-        message = ""
-        html_message = "<h1>%s,欢迎您成为天天生鲜注册会员</h1>请点击下面链接激活您的账户</br><a href='http://10.200.202.16:8000/user/active/%s'>http://10.200.202.16:8000/user/active/%s</a>" % (username, active_token, active_token)
-        sender = settings.EMAIL_FROM
-        # 收件人列表
-        receiver = [email]
-
-        send_mail(subject, message, sender, receiver, html_message=html_message)
-
+        # 异步发送邮件,使用celery
+        tasks.send_register_active_email.delay(email, username, active_token)
         # 返回应答，跳转到首页
         return redirect(reverse("goods:index"))
 
@@ -72,7 +64,7 @@ class ActiveView(View):
         user = None
         try:
             active_token = serializer.loads(active_str)
-            print("active_token="+active_token)
+
             user = User.objects.get(id=active_token["id"])
             user.is_active = 1
             user.save()
