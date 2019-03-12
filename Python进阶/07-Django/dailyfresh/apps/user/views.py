@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 import re
 from .models import User, Address
+from goods.models import GoodsSKU
 from django.views import View
 from django.conf import settings
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -10,6 +11,7 @@ from django.http  import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from celery_tasks import tasks
 from utils import mixin
+from django_redis import get_redis_connection
 
 
 # Create your views here.
@@ -131,7 +133,23 @@ class LogoutView(View):
 class UserInfoView(mixin.LoginRequiredMixin, View):
     '''用户中心-信息页'''
     def get(self, request):
-        return render(request, 'user/user_center_info.html', {"page": "user"})
+        # 获取默认收获地址
+        address = Address.objects.get_default_address(request.user.id)
+        con = get_redis_connection("default")
+        history_key = "history_%s" %(request.user.id,)
+        sku_id_list = con.lrange(history_key, 0, 4)
+        sku_goods = []
+        for sku_id in sku_id_list:
+            sku_good = GoodsSKU.objects.get(id=sku_id)
+            sku_goods.append(sku_good)
+
+        context = {
+            "page": "user",
+            "address": address,
+            "goods": sku_goods
+        }
+
+        return render(request, 'user/user_center_info.html', context)
 
 
 class UserOrderView(mixin.LoginRequiredMixin, View):
