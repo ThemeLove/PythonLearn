@@ -1,14 +1,15 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 import re
-from .models import User
+from .models import User, Address
 from django.views import View
 from django.conf import settings
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import SignatureExpired
 from django.http  import HttpResponse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from celery_tasks import tasks
+from utils import mixin
 
 
 # Create your views here.
@@ -104,7 +105,8 @@ class LoginView(View):
                 # 没有激活
                 login(request, user)
                 print("username=%s,password=%s, login" % (username, password))
-                response = redirect(reverse("goods:index"))
+                next_url = request.GET.get("next", reverse("goods:index"))
+                response = redirect(next_url)
                 if remember == "on":
                     response.set_cookie("username", username, max_age=7*24*3600)
                 else:
@@ -118,4 +120,61 @@ class LoginView(View):
             return render(request, 'user/login.html', {"errormsg": "账号或密码错误"})
 
 
+class LogoutView(View):
+    '''退出登录'''
+    def get(self, request):
+        # 利用django框架自身的logout方法，然后重定向到首页视图
+        logout(request)
+        return redirect(reverse("goods:index"))
 
+
+class UserInfoView(mixin.LoginRequiredMixin, View):
+    '''用户中心-信息页'''
+    def get(self, request):
+        return render(request, 'user/user_center_info.html', {"page": "user"})
+
+
+class UserOrderView(mixin.LoginRequiredMixin, View):
+    '''用户中心-订单页'''
+    def get(self, request):
+        # 获取用户的订单信息
+        return render(request, 'user/user_center_order.html', {"page": "order"})
+
+
+class UserSiteView(mixin.LoginRequiredMixin, View):
+    '''用户中心-地址页'''
+    def get(self, request):
+        # 查找该用户的默认收货地址,传递给模板
+        try:
+            address = Address.objects.get_default_address(user_id=request.user.id)
+        except Address.DoesNotExist as e:
+            address = None
+        return render(request, 'user/user_center_site.html', {"page": "site", "address": address})
+
+    def post(self, request):
+        '''添加地址'''
+        receiver = request.POST.get("receiver")
+        addr = request.POST.get('addr')
+        zip_code = request.POST.get("zip_code")
+        phone = request.POST.get("phone")
+
+        if not all([receiver, addr, phone]):  # 这里不校验邮箱
+            return render(request, 'user/user_center_site.html', {"errormsg": "数据不完整"})
+
+        if not re.match(r"^1[3|4|5|7|8][0-9]{9}$", phone):
+            return render(request, 'user/user_center_site.html', {"errormsg": "手机格式不正确"})
+
+        # 添加新邮箱之前先判断该用户是否已有默认邮箱，如果没有将新添加的邮箱作为默认邮箱，否则不作为默认邮箱
+        try:
+            address = Address.objects.get_default_address(user_id=request.user.id)
+        except Address.DoesNotExist as e:
+            # 说明该用户尚未添加邮箱
+            address = None
+
+        if address:
+            is_default = False
+        else:
+            is_default = True
+
+        Address.objects.create(user_id=request.user.id, receiver=receiver, addr=addr, phone=phone, zip_code=zip_code, is_default=is_default)
+        return redirect(reverse("user:site"))  # 重定向的请求方式是get
