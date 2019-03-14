@@ -171,3 +171,11 @@ SESSION_CACHE_ALIAS = "default"
 
 # 登录跳转url:有登录校验的url检测到没有登录状态时跳转的url
 LOGIN_URL = "/user/login"
+
+# DEFAULT_FILE_STORAGE设置django的文件存储类
+DEFAULT_FILE_STORAGE='utils.fdfs.storage.FDFSStorage'
+# 设置 fdfs使用的client.conf文件路径
+FDFS_CLIENT_CONF = os.path.join(BASE_DIR, 'utils/fdfs/client.conf')
+print("FDFS_CLIENT_CONF="+FDFS_CLIENT_CONF)
+# 设置 fdfs存储服务器上的nginx的ip和端口号
+FDFS_URL = 'http://10.200.202.16:8888/'
