@@ -76,7 +76,7 @@ def application(client_params, get_response_status_line_and_header):
 def index(ret):
     """首页index页面"""
     content = ""
-    with open("./templates/index.html") as f:
+    with open("./templates/index_origin.html") as f:
         content = f.read()
 
     conn = pymysql.connect(host=DATABASE_IP, port=3306, user="root", password="themelove", database="stock_db", charset="utf8")

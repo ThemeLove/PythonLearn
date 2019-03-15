@@ -23,7 +23,7 @@ def serve_client(client_socket):
     response_header_fail = "HTTP/1.1 404 FAIL\r\n\r\n"
     if client_param:
         if client_param == "/":
-            client_param = "/index.html"
+            client_param = "/index_origin.html"
         response_path = "./html_test"+client_param
         print("response_path=", response_path)
         try:

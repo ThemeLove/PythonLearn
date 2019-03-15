@@ -23,7 +23,7 @@ def handle_client_socket(client_socket):
         client_request_params = ret.group(1)
         print("client_request_params=", client_request_params)
         if client_request_params == "/":
-            client_request_params = "/index.html"
+            client_request_params = "/index_origin.html"
         response_path = "./html_test"+client_request_params
         print("response_path=", response_path)
         try:

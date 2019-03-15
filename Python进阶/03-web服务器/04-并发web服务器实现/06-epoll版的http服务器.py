@@ -33,7 +33,7 @@ def serve_client(fd, epl, client_socket_dict):
         response_body = ""
         if client_param:  # 成功获取到用户的参数
             if client_param == "/":
-                client_param = "/index.html"
+                client_param = "/index_origin.html"
             response_path = "./html_test" + client_param
             print("response_path=", response_path)
             try:

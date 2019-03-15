@@ -82,7 +82,7 @@ class WSGIServer:
 
         if client_param:
             if client_param == "/":
-                client_param = "/index.html"
+                client_param = "/index_origin.html"
 
             # 动态返回的结果
             if client_param.endswith(".html"):
